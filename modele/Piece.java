@@ -1,7 +1,7 @@
 package modele;
 
 public class Piece {
-	final String player;
+	final boolean player;
 	int x;
 	int y;
 	
@@ -9,7 +9,7 @@ public class Piece {
 
 	EscampeBoard board;
 	
-	public Piece(String player, boolean licorne, EscampeBoard board) {
+	public Piece(boolean player, boolean licorne, EscampeBoard board) {
 		this.player = player;
 		this.board = board;
 		this.licorne = licorne;
