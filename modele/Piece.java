@@ -41,7 +41,7 @@ public class Piece {
 		if (caseMere.lisere == 1) {
 			for (Coup c1 : this.board.horizon1(x, y, player)) {
 				try {
-					if (this.board.array[c1.toX][c1.toY].getLisere() == this.board.lisereActuel) {
+					if (this.board.lisereActuel!=-1 && this.board.array[c1.toX][c1.toY].getLisere() == this.board.lisereActuel) {
 						returned.add(new Coup(x, y, c1.toX, c1.toY));
 					}
 				} catch (NullPointerException e) {
@@ -54,7 +54,7 @@ public class Piece {
 			for (Coup c1 : this.board.horizon1(x, y, player)) {
 				try {
 					for (Coup c2 : this.board.horizon1(c1.toX, c1.toY, player)) {
-						if (this.board.array[c2.toX][c2.toY].getLisere() == this.board.lisereActuel) {
+						if (this.board.lisereActuel!=-1 && this.board.array[c2.toX][c2.toY].getLisere() == this.board.lisereActuel) {
 							returned.add(new Coup(x, y, c2.toX, c2.toY));
 						}
 					}
@@ -69,7 +69,7 @@ public class Piece {
 				try {
 					for (Coup c2 : this.board.horizon1(c1.toX, c1.toY, player)) {
 						for (Coup c3 : this.board.horizon1(c2.toX, c2.toY, player)) {
-							if (this.board.array[c3.toX][c3.toY].getLisere() == this.board.lisereActuel) {
+							if (this.board.lisereActuel!=-1 && this.board.array[c3.toX][c3.toY].getLisere() == this.board.lisereActuel) {
 								returned.add(new Coup(x, y, c3.toX, c3.toY));
 							}
 						}

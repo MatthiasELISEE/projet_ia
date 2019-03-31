@@ -3,13 +3,15 @@ package modele;
 public class Case {
 	final int lisere;
 	Piece piece;
+	private EscampeBoard board;
 	
-	public Case(int lisere) throws IllegalArgumentException{
+	public Case(int lisere, EscampeBoard board) throws IllegalArgumentException{
 		this.lisere = lisere;
 		if (lisere < 1 || lisere > 3) {
 			throw new IllegalArgumentException("lisere trop grand : "+lisere);
 		}
 		piece = null;
+		this.board = board;
 	}
 	
 	public int getLisere() {

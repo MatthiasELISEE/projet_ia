@@ -11,11 +11,9 @@ import java.nio.file.Files;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 
-import java.util.concurrent.TimeUnit;
-
 public class EscampeBoard {
 
-	int lisereActuel;
+	int lisereActuel = -1;
 
 	boolean joueurActuel; // true si noir, false si blanc
 
@@ -26,47 +24,47 @@ public class EscampeBoard {
 	public EscampeBoard() {
 
 		array = new Case[6][6];
-		array[0][0] = new Case(1);
-		array[1][0] = new Case(2);
-		array[2][0] = new Case(2);
-		array[3][0] = new Case(3);
-		array[4][0] = new Case(1);
-		array[5][0] = new Case(2);
+		array[0][0] = new Case(1,this);
+		array[1][0] = new Case(2,this);
+		array[2][0] = new Case(2,this);
+		array[3][0] = new Case(3,this);
+		array[4][0] = new Case(1,this);
+		array[5][0] = new Case(2,this);
 
-		array[0][1] = new Case(3);
-		array[1][1] = new Case(1);
-		array[2][1] = new Case(3);
-		array[3][1] = new Case(1);
-		array[4][1] = new Case(3);
-		array[5][1] = new Case(2);
+		array[0][1] = new Case(3,this);
+		array[1][1] = new Case(1,this);
+		array[2][1] = new Case(3,this);
+		array[3][1] = new Case(1,this);
+		array[4][1] = new Case(3,this);
+		array[5][1] = new Case(2,this);
 
-		array[0][2] = new Case(2);
-		array[1][2] = new Case(3);
-		array[2][2] = new Case(1);
-		array[3][2] = new Case(2);
-		array[4][2] = new Case(1);
-		array[5][2] = new Case(3);
+		array[0][2] = new Case(2,this);
+		array[1][2] = new Case(3,this);
+		array[2][2] = new Case(1,this);
+		array[3][2] = new Case(2,this);
+		array[4][2] = new Case(1,this);
+		array[5][2] = new Case(3,this);
 
-		array[0][3] = new Case(2);
-		array[1][3] = new Case(1);
-		array[2][3] = new Case(3);
-		array[3][3] = new Case(2);
-		array[4][3] = new Case(3);
-		array[5][3] = new Case(1);
+		array[0][3] = new Case(2,this);
+		array[1][3] = new Case(1,this);
+		array[2][3] = new Case(3,this);
+		array[3][3] = new Case(2,this);
+		array[4][3] = new Case(3,this);
+		array[5][3] = new Case(1,this);
 
-		array[0][4] = new Case(1);
-		array[1][4] = new Case(3);
-		array[2][4] = new Case(1);
-		array[3][4] = new Case(3);
-		array[4][4] = new Case(1);
-		array[5][4] = new Case(2);
+		array[0][4] = new Case(1,this);
+		array[1][4] = new Case(3,this);
+		array[2][4] = new Case(1,this);
+		array[3][4] = new Case(3,this);
+		array[4][4] = new Case(1,this);
+		array[5][4] = new Case(2,this);
 
-		array[0][5] = new Case(3);
-		array[1][5] = new Case(2);
-		array[2][5] = new Case(2);
-		array[3][5] = new Case(1);
-		array[4][5] = new Case(3);
-		array[5][5] = new Case(2);
+		array[0][5] = new Case(3,this);
+		array[1][5] = new Case(2,this);
+		array[2][5] = new Case(2,this);
+		array[3][5] = new Case(1,this);
+		array[4][5] = new Case(3,this);
+		array[5][5] = new Case(2,this);
 
 		pieces = new ArrayList<>();
 	}
@@ -142,6 +140,7 @@ public class EscampeBoard {
 			Piece tmp = this.array[c.fromX][c.fromY].getPiece();
 			this.array[c.fromX][c.fromY].retirerPiece();
 			this.array[c.toX][c.toY].mettrePiece(tmp);
+			this.lisereActuel = this.array[c.toX][c.toY].lisere;
 		} else {
 			Coup.debutPartie(move, this, (player == "noir"));
 		}
