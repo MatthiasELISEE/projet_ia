@@ -19,9 +19,9 @@ public class Coup {
 		char[] chars = coup.toCharArray();
 
 		this.fromX = chars[0] - 64 - 1;
-		this.fromY = Character.getNumericValue(chars[1])+1;
+		this.fromY = Character.getNumericValue(chars[1])-1;
 		this.toX = chars[3] - 64 - 1;
-		this.toY = Character.getNumericValue(chars[4])+1;
+		this.toY = Character.getNumericValue(chars[4])-1;
 	}
 	
 	public static void debutPartie(String positions, EscampeBoard board, boolean player) {		
@@ -56,7 +56,7 @@ public class Coup {
 
 	public static void main(String a[]) {
 		Coup c = new Coup(1, 1, 2, 2);
-		Coup c2 = new Coup("B1-C2");
+		Coup c2 = new Coup("B2-C3");
 		System.out.println(c);
 		System.out.println(c2);
 	}

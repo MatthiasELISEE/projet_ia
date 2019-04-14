@@ -36,53 +36,65 @@ public class Piece {
 	public Coup[] possibleMoves() {
 		Case caseMere = this.board.array[x][y];
 
+		if (this.board.lisereActuel != -1 && caseMere.getLisere() != this.board.lisereActuel) {
+			Coup[] returned = new Coup[1];
+			returned[0] = null;
+			return returned;
+		}
+
 		ArrayList<Coup> returned = new ArrayList<>();
 
-		if (caseMere.lisere == 1) {
+		if (caseMere.getLisere() == 1) {
 			for (Coup c1 : this.board.horizon1(x, y, player)) {
-				try {
-					if (this.board.lisereActuel!=-1 && this.board.array[c1.toX][c1.toY].getLisere() == this.board.lisereActuel) {
-						returned.add(new Coup(x, y, c1.toX, c1.toY));
-					}
-				} catch (NullPointerException e) {
-					// les coups nulls sont des coups impossibles.
+				if (c1 != null) {
+					returned.add(new Coup(x, y, c1.toX, c1.toY));
 				}
 			}
 		}
 
-		if (caseMere.lisere == 2) {
+		if (caseMere.getLisere() == 2) {
 			for (Coup c1 : this.board.horizon1(x, y, player)) {
-				try {
+				if (c1 != null) {
 					for (Coup c2 : this.board.horizon1(c1.toX, c1.toY, player)) {
-						if (this.board.lisereActuel!=-1 && this.board.array[c2.toX][c2.toY].getLisere() == this.board.lisereActuel) {
+						if (c2 != null) {
 							returned.add(new Coup(x, y, c2.toX, c2.toY));
 						}
 					}
-				} catch (NullPointerException e) {
-					// les coups nulls sont des coups impossibles.
 				}
 			}
 		}
 
-		if (caseMere.lisere == 3) {
+		if (caseMere.getLisere() == 3) {
+			// System.err.println(1);
 			for (Coup c1 : this.board.horizon1(x, y, player)) {
-				try {
+				if (c1 != null) {
+					// System.err.println(c1);
 					for (Coup c2 : this.board.horizon1(c1.toX, c1.toY, player)) {
-						for (Coup c3 : this.board.horizon1(c2.toX, c2.toY, player)) {
-							if (this.board.lisereActuel!=-1 && this.board.array[c3.toX][c3.toY].getLisere() == this.board.lisereActuel) {
-								returned.add(new Coup(x, y, c3.toX, c3.toY));
+						if (c2 != null) {
+							// System.err.println("#"+c2.toString());
+							for (Coup c3 : this.board.horizon1(c2.toX, c2.toY, player)) {
+								if (c3 != null) {
+									// System.err.println("##"+c2.toString());
+									// System.err.println("well");
+									returned.add(new Coup(x, y, c3.toX, c3.toY));
+								}
 							}
 						}
 					}
-				} catch (NullPointerException e) {
-					// les coups nulls sont des coups impossibles.
 				}
 			}
 		}
-
-		System.out.println(returned);
-
 		Coup[] arg0 = new Coup[returned.size()];
 		return returned.toArray(arg0);
+	}
+
+	public String toString() {
+		String texte = "";
+		if (this.licorne) {
+			texte += "l";
+		}
+		texte += this.player;
+		texte += "(" + this.x + ":" + this.y + ")";
+		return texte;
 	}
 }

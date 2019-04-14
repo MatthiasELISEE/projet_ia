@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 import java.nio.file.Files;
 import java.io.FileReader;
@@ -19,7 +20,7 @@ public class EscampeBoard {
 
 	Case[][] array;
 
-	public ArrayList<Piece> pieces;
+	public HashSet<Piece> pieces;
 
 	public EscampeBoard() {
 
@@ -66,7 +67,7 @@ public class EscampeBoard {
 		array[4][5] = new Case(3,this);
 		array[5][5] = new Case(2,this);
 
-		pieces = new ArrayList<>();
+		pieces = new HashSet<>();
 	}
 
 	public boolean isValidMove(String move, String player) {
@@ -137,9 +138,7 @@ public class EscampeBoard {
 	public void play(String move, String player) {
 		if (move.length() == 5) {
 			Coup c = new Coup(move);
-			Piece tmp = this.array[c.fromX][c.fromY].getPiece();
-			this.array[c.fromX][c.fromY].retirerPiece();
-			this.array[c.toX][c.toY].mettrePiece(tmp);
+			this.array[c.fromX][c.fromY].bougerPiece(c);
 			this.lisereActuel = this.array[c.toX][c.toY].lisere;
 		} else {
 			Coup.debutPartie(move, this, (player == "noir"));
@@ -287,6 +286,12 @@ public class EscampeBoard {
 
 		System.out.println(Arrays.toString(b.possibleMoves("noir")));
 		System.out.println(b.toString());
+		b.array[1][4].getPiece().possibleMoves();
+		System.out.println(b.possibleMoves("noir")[0]);
+		b.play(b.possibleMoves("noir")[0].toString(), "noir");
+		System.out.println(b);
+		System.out.println(Arrays.toString(b.possibleMoves("noir")));
+
 		try {
 			TimeUnit.SECONDS.sleep(1);
 		} catch (InterruptedException e) {
