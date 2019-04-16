@@ -12,18 +12,22 @@ import java.nio.file.Files;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class EscampeBoard {
 
 	int lisereActuel = -1;
 
 	boolean joueurActuel; // true si noir, false si blanc
-
+	private boolean BlancGagne = false;
+	private boolean NoirGagne = false;
+	private Timer timer = new Timer();
 	Case[][] array;
-
+	public int secondsPassed = 0;
 	public HashSet<Piece> pieces;
+	private boolean partieNull = false;
 
-	private FileReader fileReader;
 
 	public EscampeBoard() {
 
@@ -141,11 +145,21 @@ public class EscampeBoard {
 	public void play(String move, String player) {
 		if (move.length() == 5) {
 			Coup c = new Coup(move);
+			if(this.array[c.fromX][c.fromY].piece.licorne && player == "noir") {
+				this.NoirGagne = true;
+			}
+			if(this.array[c.fromX][c.fromY].piece.licorne && player == "blanc") {
+				this.BlancGagne = true;
+			}
+			if(this.secondsPassed==500) {
+				this.partieNull=true;
+			}
 			this.array[c.fromX][c.fromY].bougerPiece(c);
 			this.lisereActuel = this.array[c.toX][c.toY].lisere;
 		} else {
 			Coup.debutPartie(move, this, (player == "noir"));
 		}
+
 	}
 
 	public boolean mettrePiece(Piece p) {
@@ -154,12 +168,12 @@ public class EscampeBoard {
 			return array[p.getX()][p.getY()].mettrePiece(p);
 		}
 		return false;
-}
+	}
 
 	public String toString() {
 		String texte = "";
 		for (int i = 0; i < 6; i++) {
-			
+
 			for (int j = 0; j < 6; j++) {
 				if (this.array[j][i].getPiece() != null && this.array[j][i].getPiece().licorne
 						&& this.array[j][i].getPiece().player) {
@@ -229,18 +243,17 @@ public class EscampeBoard {
 		texte = texte + "%  ABCDEF";
 		Files.write(path, texte.getBytes());
 	}
-	
+
 	//
 	//Initialise un plateau depuis un fichier sauvegarde
 	//
 	public void setFromFile(String fileName) throws IOException {
 
 		File file = new File(fileName);
-		fileReader = null;
 		int numeroLigne = 0;
 		int numeroColonne = 0;
-	    ArrayList<Character> tableauDeSauvegarde = new ArrayList<Character>();
-		
+		ArrayList<Character> tableauDeSauvegarde = new ArrayList<Character>();
+
 		try {
 			List<String> lignes = Files.readAllLines(Paths.get(fileName));
 			for (String ligne:lignes) {
@@ -294,47 +307,50 @@ public class EscampeBoard {
 					if (numeroColonne == 0) {
 						numeroLigne = numeroLigne + 1;
 					}
-					
+
 				}
-				
+
 
 			}
 		}
-		 catch (IOException e) {
+		catch (IOException e) {
 			System.err.println("impossible d'ouvrir le fichier " + file.toString());
 		}
 	}
+
+	TimerTask task = new TimerTask() {
+		public void run() {
+			secondsPassed++;
+			System.out.println("Seconds passed: "+ secondsPassed);
+		}
+	};
+	public void startTimer() {
+		this.timer.scheduleAtFixedRate(task, 1000, 1000);
+	}
+
 	public boolean gameOver() {
-		 //TODO a faire
-		return true;
+		//TODO a faire
+		if(this.partieNull) {
+			return true;
+
+		}
+		if(this.BlancGagne) {
+			return true;
+		}
+		if(this.NoirGagne) {
+			return true;
+		}
+		return false;
 	}
 
 	public static void main(String[] args) throws IOException {
-		EscampeBoard b = new EscampeBoard();
 
-		Coup.debutPartie("C6/A6/B5/D5/E6/F5", b, true);
-		Coup.debutPartie("B2/C2/E2/F2/A1/B1", b, false);
+		EscampeBoard b = new EscampeBoard();
+		b.startTimer();
+
+		b.setFromFile("Test");
 		b.saveToFile("test.txt");
 
-		System.out.println(Arrays.toString(b.possibleMoves("noir")));
-		System.out.println(b.toString());
-		b.array[1][4].getPiece().possibleMoves();
-		System.out.println(b.possibleMoves("noir")[0]);
-		b.play(b.possibleMoves("noir")[0].toString(), "noir");
-		System.out.println(b);
-		System.out.println(Arrays.toString(b.possibleMoves("noir")));
 
-		try {
-			TimeUnit.SECONDS.sleep(1);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		/*
-		 * EscampeBoard board = new EscampeBoard(); EscampeBoard board2 = new
-		 * EscampeBoard(this.InitGameFromFile());
-		 * System.out.println(!board2.array[0][0].getPiece().licorne);
-		 * board2.setFromFile("FichierStockage");
-		 */
 	}
 }
