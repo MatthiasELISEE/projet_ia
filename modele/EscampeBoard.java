@@ -1,5 +1,5 @@
 package modele;
-
+import java.io.FileWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import java.nio.file.Files;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
+import java.util.List;
 
 public class EscampeBoard {
 
@@ -21,6 +22,8 @@ public class EscampeBoard {
 	Case[][] array;
 
 	public HashSet<Piece> pieces;
+
+	private FileReader fileReader;
 
 	public EscampeBoard() {
 
@@ -85,7 +88,7 @@ public class EscampeBoard {
 	}
 
 	/*
-	 * Vérifie que le joueur du booléen peut passer par la case (x,y)
+	 * VÃ©rifie que le joueur du boolÃ©en peut passer par la case (x,y)
 	 */
 	public boolean traversable(int x, int y, boolean player) {
 		if ((x < 6 && x >= 0) && (y < 6 && y >= 0) && (array[x][y].getPiece() == null)) {
@@ -151,7 +154,7 @@ public class EscampeBoard {
 			return array[p.getX()][p.getY()].mettrePiece(p);
 		}
 		return false;
-	}
+}
 
 	public String toString() {
 		String texte = "";
@@ -186,12 +189,17 @@ public class EscampeBoard {
 		}
 		return texte;
 	}
-
+	//
+	//Initialise un fichier de sauvegarde depuis un board
+	//
 	public void saveToFile(String fileName) throws IOException {
 		Path path = Paths.get(fileName);
-		String texte = "";
+		String texte = "%  ABCDEF"+"\n";
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 6; j++) {
+				if(j==0) {
+					texte = texte+"0"+(i+1)+" ";
+				}
 				if (this.array[j][i].getPiece() != null && this.array[j][i].getPiece().licorne
 						&& this.array[j][i].getPiece().player) {
 					texte = texte + "N";
@@ -212,69 +220,93 @@ public class EscampeBoard {
 				if (this.array[j][i].getPiece() == null) {
 					texte = texte + "-";
 				}
+				if(j==5) {
+					texte = texte+" 0"+(i+1);
+				}
 			}
 			texte = texte + "\n";
 		}
-
+		texte = texte + "%  ABCDEF";
 		Files.write(path, texte.getBytes());
 	}
-
+	
+	//
+	//Initialise un plateau depuis un fichier sauvegarde
+	//
 	public void setFromFile(String fileName) throws IOException {
 
 		File file = new File(fileName);
-		FileReader fileReader = null;
+		fileReader = null;
 		int numeroLigne = 0;
 		int numeroColonne = 0;
+	    ArrayList<Character> tableauDeSauvegarde = new ArrayList<Character>();
+		
 		try {
-			fileReader = new FileReader(file);
-
-			char[] TableauDeSauvegarde = new char[36];
-
-			fileReader.read(TableauDeSauvegarde);
-			System.out.println("voici la sauvegarde : ");
-			for (char c : TableauDeSauvegarde) {
-				System.out.print(c);
+			List<String> lignes = Files.readAllLines(Paths.get(fileName));
+			for (String ligne:lignes) {
+				if(ligne.charAt(0)!='%') {
+					for(int i=0;i<ligne.length();i++){
+						tableauDeSauvegarde.add(ligne.charAt(i));
+					}
+				}
 			}
-			for (char c : TableauDeSauvegarde) {
-				System.out.println(" numero de la ligne : " + numeroLigne + " numero de la colonne " + numeroColonne);
+			System.out.println(tableauDeSauvegarde);
+			for (char c : tableauDeSauvegarde) {
 				if (c == 'N') {
+					System.out.println(" numero de la ligne : " + numeroLigne + " numero de la colonne " + numeroColonne);
+
 					Piece p = new Piece(true, true, this);
 					this.array[numeroColonne][numeroLigne].mettrePiece(p);
+					numeroColonne = (numeroColonne + 1) % 6;
+					if (numeroColonne == 0) {
+						numeroLigne = numeroLigne + 1;
+					}
 				}
 				if (c == 'n') {
 					Piece p = new Piece(true, false, this);
 					this.array[numeroColonne][numeroLigne].mettrePiece(p);
+					numeroColonne = (numeroColonne + 1) % 6;
+					if (numeroColonne == 0) {
+						numeroLigne = numeroLigne + 1;
+					}
 				}
 				if (c == 'B') {
 					Piece p = new Piece(false, true, this);
 					this.array[numeroColonne][numeroLigne].mettrePiece(p);
+					numeroColonne = (numeroColonne + 1) % 6;
+					if (numeroColonne == 0) {
+						numeroLigne = numeroLigne + 1;
+					}
 				}
 				if (c == 'b') {
 					Piece p = new Piece(false, false, this);
 					this.array[numeroColonne][numeroLigne].mettrePiece(p);
+					numeroColonne = (numeroColonne + 1) % 6;
+					if (numeroColonne == 0) {
+						numeroLigne = numeroLigne + 1;
+					}
 				}
 				if (c == '-') {
+					System.out.println(" numero de la ligne : " + numeroLigne + " numero de la colonne " + numeroColonne);
+
 					this.array[numeroColonne][numeroLigne].piece = null;
+					numeroColonne = (numeroColonne + 1) % 6;
+					if (numeroColonne == 0) {
+						numeroLigne = numeroLigne + 1;
+					}
+					
 				}
-				numeroColonne = (numeroColonne + 1) % 6;
-				if (numeroColonne == 0) {
-					numeroLigne = numeroLigne + 1;
-				}
+				
 
 			}
-			System.out.println(!this.array[0][0].getPiece().licorne);
-		} catch (FileNotFoundException e) {
-			System.err.printf("le fichier %s n'a pas ete trouve,", file.toString());
-		} catch (IOException e) {
-			System.err.println("impossible de lire le contenue " + file.toString());
 		}
-		try {
-			fileReader.close();
-		} catch (IOException e) {
-			System.err.println("impossible de fermer le fichier " + file.toString());
-		} catch (NullPointerException e) {
-			System.err.print("impossible d'ouvrir le fichier");
+		 catch (IOException e) {
+			System.err.println("impossible d'ouvrir le fichier " + file.toString());
 		}
+	}
+	public boolean gameOver() {
+		 //TODO a faire
+		return true;
 	}
 
 	public static void main(String[] args) throws IOException {
