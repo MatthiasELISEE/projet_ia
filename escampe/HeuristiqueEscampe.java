@@ -19,16 +19,15 @@ public class HeuristiqueEscampe implements iia.espacesEtats.modeles.Heuristique,
 	public int eval(PlateauJeu p, Joueur j) {
 		if (p.finDePartie()) {
 			PlateauEscampe p2 = (PlateauEscampe) p;
-			if ((p2.NoirGagne && j.bool) || (p2.BlancGagne && !j.bool)) {
+			if ((p2.NoirGagne && j.getNom() == "noir") || (p2.BlancGagne && j.getNom()=="blanc")) {
 				return Integer.MAX_VALUE;
 			}
-			else if ((p2.NoirGagne && !j.bool) || (p2.BlancGagne && j.bool)) {
+			else if ((p2.NoirGagne && j.getNom()=="blanc") || (p2.BlancGagne && j.getNom()=="noir")) {
 				return Integer.MIN_VALUE;
 			} else {
 				return 0;
 			}
 		}
-		
 		return 0;
 	}
 }

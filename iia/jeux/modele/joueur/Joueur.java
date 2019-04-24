@@ -7,11 +7,19 @@ public class Joueur // A
 	public boolean bool;
 
 	public Joueur(String s) {
-		nom = s;
+		setNom(s);
 		this.bool = (s == "noir");
 	}
 
 	public String toString() {
+		return getNom();
+	}
+
+	public String getNom() {
 		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
 	}
 }

@@ -14,6 +14,7 @@ import iia.jeux.modele.joueur.*;
 public class NoLoophole implements IJoueur {
 
 	private int numJoueur;
+	private int nbTours = 0;
 	public String nomJoueur;
 	private PlateauEscampe board;
 	private ProblemeEscampeSimple probleme;
@@ -39,8 +40,8 @@ public class NoLoophole implements IJoueur {
 		//probleme = new ProblemeEscampeSimple(board, nomJoueur);
 		String coup = null;
 		System.out.println(board.pieces);
-		System.out.println(board.pieces.size());
-
+		System.out.println(nbTours);
+		nbTours++;
 		if (board.pieces.isEmpty()) {
 			coup = "A6/B5/C6/D5/E6/F5";
 		} else if (board.pieces.size() == 6) {
@@ -62,8 +63,9 @@ public class NoLoophole implements IJoueur {
 //			coup = ((PlateauEscampe) solution.get(0)).dernierCoup;
 			
 			// Version théorie des jeux
-			System.out.println(Arrays.toString(this.board.copy().coupsPossibles(this.joueur)));
-			coup = this.algorithm.meilleurCoup(this.board.copy());
+			//System.out.println(Arrays.toString(this.board.copy().coupsPossibles(this.joueur)));
+		
+			coup = this.algorithm.meilleurCoup(this.board.copy(), Math.min(nbTours,3));
 			if (coup == null) {
 				this.board.lisereActuel = -1;
 				return "E";

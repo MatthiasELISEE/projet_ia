@@ -16,8 +16,7 @@ public class Minimax implements AlgoJeu {
 	/**
 	 * La profondeur de recherche par défaut
 	 */
-	private final static int PROFMAXDEFAUT = 1000
-			;
+	private final static int PROFMAXDEFAUT = 3;
 
 	// -------------------------------------------
 	// Attributs
@@ -73,7 +72,8 @@ public class Minimax implements AlgoJeu {
 	// -------------------------------------------
 	// Méthodes de l'interface AlgoJeu
 	// -------------------------------------------
-	public String meilleurCoup(PlateauJeu p) {
+	public String meilleurCoup(PlateauJeu p,int profMax) {
+		this.profMax = profMax;
 		System.out.println(joueurMax);
 		System.out.println(p);
 		this.nbfeuilles = 0;
@@ -81,23 +81,23 @@ public class Minimax implements AlgoJeu {
 		String meilleur_coup = null;
 		int meilleur_score = Integer.MIN_VALUE;
 		String[] coupsPossibles = p.coupsPossibles(joueurMax);
-		//System.out.println(Arrays.toString(coupsPossibles));
-		//System.out.println(((PlateauEscampe)p).lisereActuel);
+		int[] scores = new int[100];
+		System.out.println(((PlateauEscampe)p).lisereActuel);
 		for (int i = 0; i < coupsPossibles.length; i++) {
-			
 			//System.out.println(p);
 			//System.out.println(coupsPossibles[i]);
 			//PlateauJeu mlp = p.copy();
 			//mlp.joue(joueurMax, coup);
-			int score = this.minimax(p.copy(), coupsPossibles[i], this.profMax, true);
-			if (score == Integer.MAX_VALUE) {
-				System.out.println("ben ouais");
-			}
+			int score = this.minimax(p.copy(), coupsPossibles[i], 0, true);
+			scores[i] = score;
 			if (meilleur_score <= score) {
 				meilleur_score = score;
 				meilleur_coup = coupsPossibles[i];
 			}
 		}
+		System.out.println(Arrays.toString(coupsPossibles));
+		System.out.println(Arrays.toString(scores));
+		System.out.println(meilleur_coup);
 		System.out.println("noeuds analysés : " + this.nbnoeuds + " ; feuilles analysées : "+ this.nbfeuilles);
 		
 		return meilleur_coup;
@@ -123,24 +123,27 @@ public class Minimax implements AlgoJeu {
 	public int minimax(PlateauJeu p, String coup, int depth, boolean player) {
 		this.nbnoeuds++;
 		int value;
-		if (depth <= 0 || this.terminal(p)) {
+		//System.out.println(depth >= this.profMax );
+		//System.out.println(p);
+		if (this.nbnoeuds % 10000 == 0) {
+			System.out.print("#");
+		}
+		if (depth >= this.profMax || this.terminal(p)) {
 			this.nbfeuilles++;
-			return h.eval(p, this.joueurMax);
+			return h.eval(p.copy(), this.joueurMax) - depth;
 		};
 		if (player) {
 			value = Integer.MAX_VALUE;
 			
 			p.joue(joueurMax, coup);
 			for (int i = 0; i < p.coupsPossibles(joueurMin).length; i++) {
-				//System.out.println(p.coupsPossibles(joueurMin));
-				value = Math.min(value, this.minimax(p,  p.coupsPossibles(joueurMin)[i], depth - 1, false));
+				value = Math.min(value, this.minimax(p.copy(),  p.coupsPossibles(joueurMin)[i], depth + 1, false));
 			}
 		} else {
 			value = Integer.MIN_VALUE;
-			//System.out.println(coup);
 			p.joue(joueurMin, coup);
 			for (int i = 0; i < p.coupsPossibles(joueurMax).length; i++) {
-				value = Math.max(value, this.minimax(p,  p.coupsPossibles(joueurMax)[i], depth - 1, false));
+				value = Math.max(value, this.minimax(p.copy(),  p.coupsPossibles(joueurMax)[i], depth + 1, true));
 			}
 		}
 		return value;

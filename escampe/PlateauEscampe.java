@@ -11,6 +11,8 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
 import iia.espacesEtats.modeles.*;
 import iia.jeux.modele.CoupJeu;
 import iia.jeux.modele.PlateauJeu;
@@ -29,6 +31,10 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 	public int secondsPassed = 0;
 	public HashSet<Piece> pieces;
 	boolean partieNull = false;
+	
+	// Est là pour accélérer la fonction coupsPossibles
+	String[] coupsPossibles;
+	boolean piecesOntBouge = true;
 
 	public PlateauEscampe copy() {
 		PlateauEscampe returned = new PlateauEscampe();
@@ -43,8 +49,8 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 		returned.joueurActuel = this.joueurActuel;
 		returned.dernierCoup = this.dernierCoup;
 
-		returned.BlancGagne = this.BlancGagne;
-		returned.NoirGagne = this.NoirGagne;
+		returned.BlancGagne = this.BlancGagne?true:false;
+		returned.NoirGagne = this.NoirGagne?true:false;
 
 		returned.secondsPassed = this.secondsPassed;
 		returned.timer = this.timer;
@@ -54,7 +60,7 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 			returned.pieces.add(piece.copy());
 		}
 
-		returned.partieNull = this.partieNull;
+		returned.partieNull = this.partieNull?true:false;
 
 		return returned;
 	}
@@ -125,8 +131,15 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 	 * Vérifie que le joueur du booléen peut passer par la case (x,y)
 	 */
 	public boolean traversable(int x, int y, boolean player, boolean fatal) {
-		if ((x < 6 && x >= 0) && (y < 6 && y >= 0) && (array[x][y].getPiece() == null || (fatal && (this.array[x][y].getPiece()!= null && this.array[x][y].getPiece().licorne)))) {
-			return true;
+		if ((x < 6 && x >= 0) && (y < 6 && y >= 0)) {
+			if (array[x][y].getPiece() == null) {
+				return true;
+			}
+			if (fatal) {
+				if (this.array[x][y].getPiece() != null && this.array[x][y].getPiece().licorne) {
+					return true;
+				}
+			}
 		}
 		return false;
 	}
@@ -177,7 +190,19 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 
 	public void play(String move, String player) {
 		this.dernierCoup = move;
+		if (this.gameOver()) {
+			System.err.println("you can't play after the end of the game, beach");
+			System.err.println(this.partieNull + " " + this.BlancGagne + " "+ this.NoirGagne);
+			System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+			try {
+				TimeUnit.SECONDS.sleep(30);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			System.exit(1);
+		}
 		if (move != "E") {
+			this.piecesOntBouge = true;
 			if (move.length() == 5) {
 				Coup c = new Coup(move);
 				if (!this.array[c.fromX][c.fromY].piece.licorne
@@ -185,6 +210,12 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 						&& (player == "noir") != this.array[c.toX][c.toY].piece.player
 						&& this.array[c.toX][c.toY].piece.licorne) {
 					if (player == "noir") {
+						System.out.println(":::::::::::::::::::::");
+						System.out.println(c);
+						//System.out.println(traversable(c.toX,c.toY,player=="noir",true));
+						//System.out.println(Arrays.toString(this.horizon1(c.fromX, c.fromY, player=="noir", true)));
+						System.out.println(this);
+						System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
 						this.NoirGagne = true;
 					}
 					if (player == "blanc") {
@@ -372,6 +403,8 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 	}
 
 	public boolean gameOver() {
+		
+		//System.err.println(this.partieNull + " " + this.BlancGagne + " "+ this.NoirGagne);
 		if (this.partieNull) {
 			return true;
 		}
@@ -395,7 +428,11 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 
 	@Override
 	public String[] coupsPossibles(Joueur j) {
-		return this.possibleMoves(j.toString());
+		if (this.piecesOntBouge) {
+			this.piecesOntBouge = false;
+			this.coupsPossibles = this.possibleMoves(j.toString());
+		}
+		return this.coupsPossibles;
 	}
 
 	@Override
