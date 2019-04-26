@@ -38,8 +38,8 @@ public class NoLoophole implements IJoueur {
 	public String choixMouvement() {
 		//probleme = new ProblemeEscampeSimple(board, nomJoueur);
 		String coup = null;
-		System.out.println(board.pieces);
-		System.out.println(board.pieces.size());
+		System.out.println("Voici les pièces : "+board.pieces);
+		System.out.println("Voici le nombre de pièces : " +board.pieces.size());
 
 		if (board.pieces.isEmpty()) {
 			coup = "A6/B5/C6/D5/E6/F5";
@@ -47,20 +47,20 @@ public class NoLoophole implements IJoueur {
 			coup = "A1/B2/C1/D2/E1/F2";
 		} else {
 			// Version graphe d'Etat
-//			Solution solution = new Solution();//algorithm.chercheSolution(this.probleme);
-//			if (solution == null) {
-//				return "E";
-//			}
-//			Iterator<Etat> itr = solution.descendingIterator();
-//			System.out.println(solution);
-//			System.out.println(((PlateauEscampe)solution.getLast()).dernierCoup);
-//			System.out.println(((PlateauEscampe)solution.getFirst()).dernierCoup);
-//			
-//			if (itr.hasNext()) {
-//				coup = ((PlateauEscampe) itr.next()).dernierCoup;
-//			}
-//			coup = ((PlateauEscampe) solution.get(0)).dernierCoup;
-			
+			//			Solution solution = new Solution();//algorithm.chercheSolution(this.probleme);
+			//			if (solution == null) {
+			//				return "E";
+			//			}
+			//			Iterator<Etat> itr = solution.descendingIterator();
+			//			System.out.println(solution);
+			//			System.out.println(((PlateauEscampe)solution.getLast()).dernierCoup);
+			//			System.out.println(((PlateauEscampe)solution.getFirst()).dernierCoup);
+			//			
+			//			if (itr.hasNext()) {
+			//				coup = ((PlateauEscampe) itr.next()).dernierCoup;
+			//			}
+			//			coup = ((PlateauEscampe) solution.get(0)).dernierCoup;
+
 			// Version théorie des jeux
 			System.out.println(Arrays.toString(this.board.copy().coupsPossibles(this.joueur)));
 			coup = this.algorithm.meilleurCoup(this.board.copy());
@@ -68,10 +68,16 @@ public class NoLoophole implements IJoueur {
 				this.board.lisereActuel = -1;
 				return "E";
 			}
-			System.out.println(coup);
+			System.out.println("Le coup est null "+coup);
 		}
-		System.out.println(coup);
+
 		this.board.joue(this.joueur, coup);
+		if(this.board.gameOver()) {
+			coup = "GameOver";
+			System.out.println("Voici le coup: " +coup);
+			return coup;
+		}
+		System.out.println("Voici le coup: " +coup);
 		return coup;
 	}
 
@@ -90,6 +96,6 @@ public class NoLoophole implements IJoueur {
 
 	@Override
 	public String binoName() {
-		return "Baptiste et Matthias";
+		return "Classe NoLoophole";
 	}
 }
