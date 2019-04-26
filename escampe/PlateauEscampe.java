@@ -29,7 +29,8 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 	public int secondsPassed = 0;
 	public HashSet<Piece> pieces;
 	boolean partieNull = false;
-
+	private boolean TimerLance = false;
+	
 	public PlateauEscampe copy() {
 		PlateauEscampe returned = new PlateauEscampe();
 
@@ -38,14 +39,16 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 				returned.array[i][j] = this.array[i][j].copy(returned);
 			}
 		}
-
+		returned.secondsPassed= this.secondsPassed;
 		returned.lisereActuel = this.lisereActuel;
 		returned.joueurActuel = this.joueurActuel;
 		returned.dernierCoup = this.dernierCoup;
-
+		returned.BlancGagne= this.BlancGagne;
+		returned.NoirGagne= this.NoirGagne;
+		returned.partieNull=this.partieNull;
 		returned.BlancGagne = this.BlancGagne;
 		returned.NoirGagne = this.NoirGagne;
-
+		returned.TimerLance=this.TimerLance;
 		returned.secondsPassed = this.secondsPassed;
 		returned.timer = this.timer;
 
@@ -176,6 +179,10 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 	}
 
 	public void play(String move, String player) {
+		if(this.secondsPassed==0 && TimerLance==false) {
+			TimerLance=true;
+			startTimer();
+		}
 		this.dernierCoup = move;
 		if (move != "E") {
 			if (move.length() == 5) {
@@ -373,12 +380,15 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 
 	public boolean gameOver() {
 		if (this.partieNull) {
+			System.out.println("La partie est null");
 			return true;
 		}
 		if (this.BlancGagne) {
+			System.out.println("La partie est gagné par le blanc");
 			return true;
 		}
 		if (this.NoirGagne) {
+			System.out.println("La partie est gagné par le noir");
 			return true;
 		}
 		return false;
@@ -418,4 +428,5 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 	public void printPoints() {
 		System.out.println("tour");
 	}
+
 }
