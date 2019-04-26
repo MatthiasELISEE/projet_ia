@@ -111,13 +111,13 @@ public class Solo {
     		long waitingTime2 = new Date().getTime();
     		// On rajoute 1 pour eliminer les temps infinis
     		long waitingTime = waitingTime2 - waitingTime1 + 1;
-    		System.out.println("Le joueur " + joueurCourant.binoName() + " a joué le coup " + coup + " en " + waitingTime + "s.");
-    		try {
+    		System.out.println("Le joueur " + joueurCourant.binoName() + " a joué le coup " + coup + " en " + waitingTime + "ms.");
+    	/*	try {
     			Thread.sleep(1); // Juste pour attendre un peu
     		}
     		catch (InterruptedException e) {
     		}
-    		
+    		*/
     		if (coup == "GameOver")
     			partieFinie = true;
     		else if (nbCoups == 2) { // Dans Escampe le joueur Blanc rejoue après avoir posé ses pièces
