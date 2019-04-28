@@ -73,7 +73,7 @@ public class Ryanndom implements AlgoJeu {
 	// -------------------------------------------
 	// Méthodes de l'interface AlgoJeu
 	// -------------------------------------------
-	public String meilleurCoup(PlateauJeu p) {
+	public String meilleurCoup(PlateauJeu p, int profMax) {
 		System.out.println(joueurMax);
 		System.out.println(p);
 		this.nbfeuilles = 0;

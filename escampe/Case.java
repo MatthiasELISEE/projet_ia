@@ -31,7 +31,7 @@ public class Case {
 	}
 
 	boolean mettrePiece(Piece p) {
-		if (piece != null) {
+		if (piece != null && !piece.licorne) {
 			return false;
 		}
 		piece = p;
@@ -41,7 +41,10 @@ public class Case {
 	// Attention ! Cette fonction ne v�rifie pas si le coup est faisable. Par contre
 	// elle fait le coup seulement sur sa propre pi�ce.
 	boolean bougerPiece(Coup c) {
-		if (c.fromX == this.piece.x && c.fromY == this.piece.y) {
+		if (c.fromX
+				== this.piece.x &&
+				c.fromY ==
+				this.piece.y) {
 			this.piece.x = c.toX;
 			this.piece.y = c.toY;
 			return this.board.array[c.toX][c.toY].mettrePiece(piece) && this.retirerPiece();

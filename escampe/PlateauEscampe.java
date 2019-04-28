@@ -11,14 +11,12 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
-
 import iia.espacesEtats.modeles.*;
 import iia.jeux.modele.CoupJeu;
 import iia.jeux.modele.PlateauJeu;
 import iia.jeux.modele.joueur.Joueur;
 
-public class PlateauEscampe implements PlateauJeu, Etat{
+public class PlateauEscampe implements PlateauJeu, Etat {
 
 	public int lisereActuel = -1;
 
@@ -31,10 +29,7 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 	public int secondsPassed = 0;
 	public HashSet<Piece> pieces;
 	boolean partieNull = false;
-	
-	// Est là pour accélérer la fonction coupsPossibles
-	String[] coupsPossibles;
-	boolean piecesOntBouge = true;
+	private boolean TimerLance = false;
 
 	public PlateauEscampe copy() {
 		PlateauEscampe returned = new PlateauEscampe();
@@ -44,14 +39,16 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 				returned.array[i][j] = this.array[i][j].copy(returned);
 			}
 		}
-
+		returned.secondsPassed = this.secondsPassed;
 		returned.lisereActuel = this.lisereActuel;
 		returned.joueurActuel = this.joueurActuel;
 		returned.dernierCoup = this.dernierCoup;
-
-		returned.BlancGagne = this.BlancGagne?true:false;
-		returned.NoirGagne = this.NoirGagne?true:false;
-
+		returned.BlancGagne = this.BlancGagne;
+		returned.NoirGagne = this.NoirGagne;
+		returned.partieNull = this.partieNull;
+		returned.BlancGagne = this.BlancGagne;
+		returned.NoirGagne = this.NoirGagne;
+		returned.TimerLance = this.TimerLance;
 		returned.secondsPassed = this.secondsPassed;
 		returned.timer = this.timer;
 
@@ -60,7 +57,7 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 			returned.pieces.add(piece.copy());
 		}
 
-		returned.partieNull = this.partieNull?true:false;
+		returned.partieNull = this.partieNull;
 
 		return returned;
 	}
@@ -162,6 +159,7 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 		if (traversable(x + 1, y, player, fatal)) {
 			returned[0] = new Coup(x, y, x + 1, y);
 		}
+
 		return returned;
 	}
 
@@ -189,45 +187,34 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 	}
 
 	public void play(String move, String player) {
-		this.dernierCoup = move;
-		if (this.gameOver()) {
-			System.err.println("you can't play after the end of the game, beach");
-			System.err.println(this.partieNull + " " + this.BlancGagne + " "+ this.NoirGagne);
-			System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
-			try {
-				TimeUnit.SECONDS.sleep(30);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			System.exit(1);
+		if (this.secondsPassed == 0 && TimerLance == false) {
+			TimerLance = true;
+			startTimer();
 		}
+		this.dernierCoup = move;
 		if (move != "E") {
-			this.piecesOntBouge = true;
 			if (move.length() == 5) {
 				Coup c = new Coup(move);
-				if (!this.array[c.fromX][c.fromY].piece.licorne
-						&& this.array[c.toX][c.toY].getPiece() != null
+				if (!this.array[c.fromX][c.fromY].piece.licorne && this.array[c.toX][c.toY].getPiece() != null
 						&& (player == "noir") != this.array[c.toX][c.toY].piece.player
 						&& this.array[c.toX][c.toY].piece.licorne) {
 					if (player == "noir") {
-						System.out.println(":::::::::::::::::::::");
-						System.out.println(c);
-						//System.out.println(traversable(c.toX,c.toY,player=="noir",true));
-						//System.out.println(Arrays.toString(this.horizon1(c.fromX, c.fromY, player=="noir", true)));
-						System.out.println(this);
-						System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
 						this.NoirGagne = true;
 					}
 					if (player == "blanc") {
 						this.BlancGagne = true;
 					}
+					System.out.println("fatal");
+					this.pieces.remove(this.array[c.toX][c.toY].getPiece());
+					this.array[c.fromX][c.fromY].bougerPiece(c);
+				} else {
+					if (this.secondsPassed == 500) {
+						this.partieNull = true;
+					}
+					this.array[c.fromX][c.fromY].bougerPiece(c);
+					this.lisereActuel = this.array[c.toX][c.toY].lisere;
+					this.joueurActuel = (player == "noir") ? false : true;
 				}
-				if (this.secondsPassed == 500) {
-					this.partieNull = true;
-				}
-				this.array[c.fromX][c.fromY].bougerPiece(c);
-				this.lisereActuel = this.array[c.toX][c.toY].lisere;
-				this.joueurActuel = (player == "noir") ? false : true;
 			} else {
 				Coup.debutPartie(move, this, (player == "noir"));
 			}
@@ -403,15 +390,17 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 	}
 
 	public boolean gameOver() {
-		
-		//System.err.println(this.partieNull + " " + this.BlancGagne + " "+ this.NoirGagne);
 		if (this.partieNull) {
+//			System.out.println("La partie est null");
 			return true;
 		}
 		if (this.BlancGagne) {
+//			System.out.println("La partie est gagnée par le blanc");
+//			System.out.println(this.lisereActuel);
 			return true;
 		}
 		if (this.NoirGagne) {
+//			System.out.println("La partie est gagné par le noir");
 			return true;
 		}
 		return false;
@@ -428,11 +417,7 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 
 	@Override
 	public String[] coupsPossibles(Joueur j) {
-		if (this.piecesOntBouge) {
-			this.piecesOntBouge = false;
-			this.coupsPossibles = this.possibleMoves(j.toString());
-		}
-		return this.coupsPossibles;
+		return this.possibleMoves(j.toString());
 	}
 
 	@Override
@@ -447,7 +432,7 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 
 	@Override
 	public boolean coupValide(Joueur j, CoupJeu c) {
-		Coup coupEscampe = (Coup)c;
+		Coup coupEscampe = (Coup) c;
 		return this.isValidMove(coupEscampe.toString(), j.toString());
 	}
 
@@ -455,4 +440,5 @@ public class PlateauEscampe implements PlateauJeu, Etat{
 	public void printPoints() {
 		System.out.println("tour");
 	}
+
 }

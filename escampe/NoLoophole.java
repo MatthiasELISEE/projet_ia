@@ -47,6 +47,9 @@ public class NoLoophole implements IJoueur {
 		} else if (board.pieces.size() == 6) {
 			coup = "A1/B2/C1/D2/E1/F2";
 		} else {
+			if (board.gameOver()) {
+				return "GameOver";
+			}
 			// Version graphe d'Etat
 //			Solution solution = new Solution();//algorithm.chercheSolution(this.probleme);
 //			if (solution == null) {
