@@ -40,15 +40,15 @@ public class HeuristiqueEscampe implements iia.espacesEtats.modeles.Heuristique,
 	public int eval(PlateauJeu p, Joueur j){
 		int points = 0;
 		PlateauEscampe p2 = (PlateauEscampe) p;
-		if(j.NOIR) {
-			if (p2.BlancGagne && !j.NOIR) {
+		if(j.bool) {
+			if (p2.BlancGagne && !j.bool) {
 				return Integer.MAX_VALUE;
 			}
-			if(p2.NoirGagne && j.NOIR) {
+			if(p2.NoirGagne && j.bool) {
 				return Integer.MIN_VALUE;
 			}
 			//si je suis mis en echec par une pièce
-			if(!j.NOIR) {
+			if(!j.bool) {
 				for (Piece piece : p2.pieces) {
 					if (piece.player==false) {
 						for(Coup coup : piece.possibleMoves()) {
@@ -60,7 +60,7 @@ public class HeuristiqueEscampe implements iia.espacesEtats.modeles.Heuristique,
 				}
 			}
 			//si je met la licorne adverse en echec
-			if(!j.NOIR) {
+			if(!j.bool) {
 				for (Piece piece : p2.pieces) {
 					if (piece.player==true) {
 						for(Coup coup : piece.possibleMoves()) {
@@ -71,10 +71,10 @@ public class HeuristiqueEscampe implements iia.espacesEtats.modeles.Heuristique,
 					}
 				}
 			}else {
-				if(j.NOIR) {
+				if(j.bool) {
 					//chaque coup possible rapporte des points
 					for(Piece piece : p2.pieces) {
-						if(j.NOIR && piece.licorne==false && piece.player==true) {
+						if(j.bool && piece.licorne==false && piece.player==true) {
 							for(Coup coup : piece.possibleMoves()) {
 								points = points+10;
 							}
@@ -86,13 +86,9 @@ public class HeuristiqueEscampe implements iia.espacesEtats.modeles.Heuristique,
 							if(p2.array[2][2].getPiece()!=null && p2.array[2][2].getPiece().licorne ||p2.array[2][3].getPiece()!=null && !p2.array[2][3].getPiece().licorne||p2.array[3][2].getPiece()!=null && !p2.array[3][2].getPiece().licorne ||p2.array[3][3].getPiece()!=null && !p2.array[3][3].getPiece().licorne) {
 								points = points+30;	
 							}
-
 						}
 					}
-
-
 				}
-
 			}
 			return points;
 		}else {
@@ -103,7 +99,7 @@ public class HeuristiqueEscampe implements iia.espacesEtats.modeles.Heuristique,
 				return Integer.MIN_VALUE;
 			}
 			//si je suis mis en echec par une pièce
-			if(!j.NOIR) {
+			if(!j.bool) {
 				for (Piece piece : p2.pieces) {
 					if (piece.player==true) {
 						for(Coup coup : piece.possibleMoves()) {
@@ -115,7 +111,7 @@ public class HeuristiqueEscampe implements iia.espacesEtats.modeles.Heuristique,
 				}
 			}
 			//si je met la licorne adverse en echec
-			if(!j.NOIR) {
+			if(!j.bool) {
 				for (Piece piece : p2.pieces) {
 					if (piece.player==false) {
 						for(Coup coup : piece.possibleMoves()) {
@@ -126,10 +122,10 @@ public class HeuristiqueEscampe implements iia.espacesEtats.modeles.Heuristique,
 					}
 				}
 			} else {
-				if(!j.NOIR) {
+				if(!j.bool) {
 					//chaque coup possible rapporte des points
 					for(Piece piece : p2.pieces) {
-						if(!j.NOIR && piece.licorne==false && piece.player==false) {
+						if(!j.bool && piece.licorne==false && piece.player==false) {
 							for(Coup coup : piece.possibleMoves()) {
 								points = points+10;
 							}
