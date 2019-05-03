@@ -22,11 +22,11 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 	 */
 
 	@Override
-	public int eval(PlateauJeu p, Joueur j, int depth) {
+	public int eval(PlateauJeu p, Joueur j) {
 		int points = 0;
 		PlateauEscampe p2 = (PlateauEscampe) p;
 		if (p2.BlancGagne && !j.bool) {
-			return Integer.MAX_VALUE - depth;
+			return Integer.MAX_VALUE;
 		}
 		if (p2.NoirGagne && j.bool) {
 			return Integer.MIN_VALUE;
@@ -118,6 +118,8 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 							}
 						}
 					}
+
+					// si je controle les cases du milieu
 					for (int i = 0; i < 6; i++) {
 						for (int v = 0; v < 6; v++) {
 
@@ -126,7 +128,7 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 										|| p2.array[2][3].getPiece() != null && !p2.array[2][3].getPiece().licorne
 										|| p2.array[3][2].getPiece() != null && !p2.array[3][2].getPiece().licorne
 										|| p2.array[3][3].getPiece() != null && !p2.array[3][3].getPiece().licorne) {
-
+									points = points + 30;
 								}
 
 							}
@@ -139,5 +141,7 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 			return points;
 		}
 	}
+
+
 
 }
