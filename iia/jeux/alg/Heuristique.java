@@ -5,7 +5,6 @@ import iia.jeux.modele.joueur.Joueur;
 
 public interface Heuristique {
 
-	public int eval(PlateauJeu p, Joueur j);
-
+	public int eval(PlateauJeu p, Joueur j, int depth);
 }
  

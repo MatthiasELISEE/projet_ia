@@ -130,7 +130,7 @@ public class Minimax implements AlgoJeu {
 		}
 		if (depth >= this.profMax || this.terminal(p)) {
 			this.nbfeuilles++;
-			return h.eval(p.copy(), this.joueurMax) - depth;
+			return h.eval(p.copy(), this.joueurMax, depth);
 		};
 		if (player) {
 			value = Integer.MAX_VALUE;
