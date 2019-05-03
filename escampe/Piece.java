@@ -56,7 +56,9 @@ public class Piece {
 			for (Coup c1 : this.board.horizon1(x, y, player, false)) {
 				if (c1 != null) {
 					for (Coup c2 : this.board.horizon1(c1.toX, c1.toY, player, true)) {
-						if (c2 != null) {
+						// !(c2.toX==c1.fromX && c2.toY==c1.fromY) sert à ne pas repasser par la
+						// première case
+						if (c2 != null && !(c2.toX == c1.fromX && c2.toY == c1.fromY)) {
 							returned.add(new Coup(x, y, c2.toX, c2.toY));
 						}
 					}
@@ -70,12 +72,10 @@ public class Piece {
 				if (c1 != null) {
 					// System.err.println(c1);
 					for (Coup c2 : this.board.horizon1(c1.toX, c1.toY, player, false)) {
-						if (c2 != null) {
-							// System.err.println("#"+c2.toString());
+						if (c2 != null && !(c2.toX == c1.fromX && c2.toY == c1.fromY)) {
 							for (Coup c3 : this.board.horizon1(c2.toX, c2.toY, player, true)) {
-								if (c3 != null) {
-									// System.err.println("##"+c2.toString());
-									// System.err.println("well");
+								if (c3 != null && !(c3.toX == c2.fromX && c3.toY == c2.fromY)
+										&& !(c3.toX == c1.fromX && c3.toY == c1.fromY)) {
 									returned.add(new Coup(x, y, c3.toX, c3.toY));
 								}
 							}

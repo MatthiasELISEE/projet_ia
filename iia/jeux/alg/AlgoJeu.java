@@ -7,10 +7,10 @@ public interface AlgoJeu {
 
     /** Renvoie le meilleur
      * @param p
-     * @param nbTours 
+     * @param profMax 
      * @return
      */
-	public String meilleurCoup(PlateauJeu p, int nbTours);
+	public String meilleurCoup(PlateauJeu p, int profMax);
 
 }
  

@@ -204,7 +204,6 @@ public class PlateauEscampe implements PlateauJeu, Etat {
 					if (player == "blanc") {
 						this.BlancGagne = true;
 					}
-					System.out.println("fatal");
 					this.pieces.remove(this.array[c.toX][c.toY].getPiece());
 					this.array[c.fromX][c.fromY].bougerPiece(c);
 				} else {

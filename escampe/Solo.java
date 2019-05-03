@@ -53,9 +53,9 @@ public class Solo {
     	System.out.println(s + " : defaultPlayer");
     	// vous devez faire qq chose comme return new MonMeilleurJoueur();
     	if (joueurBlanc != null) {
-    		return new Random();
+    		return new NoLoophole();
     	}
-    	return new NoLoophole();
+    	return new NoLoophole2();
     }
     
     /**

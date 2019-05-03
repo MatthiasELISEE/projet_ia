@@ -59,7 +59,6 @@ public class Coup implements CoupJeu {
 		System.out.println(c);
 		System.out.println(c2);
 	}
-	
 	public boolean estFatal(PlateauEscampe p) {
 		Piece depart = p.array[this.fromX][this.fromY].getPiece();
 		Piece arrivee = p.array[this.toX][this.toY].getPiece();
