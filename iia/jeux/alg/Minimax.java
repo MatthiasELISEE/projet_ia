@@ -7,6 +7,7 @@ package iia.jeux.alg;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import escampe.HeuristiqueEscampe;
 import escampe.PlateauEscampe;
 import iia.jeux.modele.CoupJeu;
 import iia.jeux.modele.PlateauJeu;
@@ -16,7 +17,7 @@ public class Minimax implements AlgoJeu {
 	/**
 	 * La profondeur de recherche par défaut
 	 */
-	private final static int PROFMAXDEFAUT = 3;
+	private final static int PROFMAXDEFAUT = 50;
 
 	// -------------------------------------------
 	// Attributs
@@ -74,7 +75,7 @@ public class Minimax implements AlgoJeu {
 	// -------------------------------------------
 	public String meilleurCoup(PlateauJeu p,int profMax) {
 		this.profMax = profMax;
-		System.out.println(joueurMax);
+		System.out.println("voici le joueurMax: "+joueurMax);
 		System.out.println(p);
 		this.nbfeuilles = 0;
 		this.nbnoeuds = 0;
@@ -82,7 +83,7 @@ public class Minimax implements AlgoJeu {
 		int meilleur_score = Integer.MIN_VALUE;
 		String[] coupsPossibles = p.coupsPossibles(joueurMax);
 		int[] scores = new int[100];
-		System.out.println(((PlateauEscampe)p).lisereActuel);
+		System.out.println("Voici le lisereActuel: "+((PlateauEscampe)p).lisereActuel);
 		for (int i = 0; i < coupsPossibles.length; i++) {
 			//System.out.println(p);
 			//System.out.println(coupsPossibles[i]);
@@ -95,9 +96,10 @@ public class Minimax implements AlgoJeu {
 				meilleur_coup = coupsPossibles[i];
 			}
 		}
-		System.out.println(Arrays.toString(coupsPossibles));
-		System.out.println(Arrays.toString(scores));
-		System.out.println(meilleur_coup);
+		System.out.println("Voici les coups possibles avec Minimax: "+Arrays.toString(coupsPossibles));
+		System.out.println("Voici le score avec Minimax: "+Arrays.toString(scores));
+		System.out.println("Voici le meilleur coup avec Minimax: "+meilleur_coup);
+		System.out.println("Voici la profondeur avec Minimax: "+this.profMax);
 		System.out.println("noeuds analysés : " + this.nbnoeuds + " ; feuilles analysées : "+ this.nbfeuilles);
 		
 		return meilleur_coup;
@@ -130,7 +132,7 @@ public class Minimax implements AlgoJeu {
 		}
 		if (depth >= this.profMax || this.terminal(p)) {
 			this.nbfeuilles++;
-			return h.eval(p.copy(), this.joueurMax, depth);
+			return h.eval(p.copy(), this.joueurMax) ;
 		};
 		if (player) {
 			value = Integer.MAX_VALUE;
