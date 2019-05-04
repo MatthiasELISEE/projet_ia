@@ -8,7 +8,7 @@ public class AlphaBeta implements AlgoJeu {
 	/**
 	 * La profondeur de recherche par défaut
 	 */
-	private final static int PROFMAXDEFAUT = 4;
+	private final static int PROFMAXDEFAUT = 3;
 
 	// -------------------------------------------
 	// Attributs
@@ -89,6 +89,8 @@ public class AlphaBeta implements AlgoJeu {
 				meilleur_coup = coup;
 			}
 		}
+		
+		System.out.println("voici la profondeur de AlphaBeta: "+this.profMax);
 		System.out.println("noeuds analysés : " + this.nbnoeuds + " ; feuilles analysées : " + this.nbfeuilles);
 		return meilleur_coup;
 	}
@@ -115,7 +117,7 @@ public class AlphaBeta implements AlgoJeu {
 		this.nbnoeuds++;
 		if (depth <= 0 || p.finDePartie()) {
 			this.nbfeuilles++;
-			return h.eval(p, this.joueurMax, depth);
+			return h.eval(p, this.joueurMax);
 		} else {
 			for (String kiddo : p.coupsPossibles(joueurMax)) {
 				PlateauJeu mlp = p.copy();
@@ -133,7 +135,7 @@ public class AlphaBeta implements AlgoJeu {
 		this.nbnoeuds++;
 		if (depth <= 0 || p.finDePartie()) {
 			this.nbfeuilles++;
-			return h.eval(p, this.joueurMin, depth);
+			return h.eval(p, this.joueurMin);
 		} else {
 			for (String kiddo : p.coupsPossibles(joueurMax)) {
 				PlateauJeu mlp = p.copy();
