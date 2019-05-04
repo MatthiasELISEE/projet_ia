@@ -45,7 +45,7 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 						}
 						if (coup != null && piece.possibleMoves().length != 0 && coup.toX == xLicorne1
 								&& coup.toY == yLicorne1 && piece.player==false) {
-							System.out.println("JE SUIS MIS EN ECHEC(je suis noir)!!!!!!!!");
+							
 							points=points-200; 
 
 
@@ -68,7 +68,7 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 					if (coup != null && piece.possibleMoves().length != 0 && coup.toX == xLicorne
 							&& coup.toY == yLicorne && piece.player==true) {
 						points = points + 60;
-						System.out.println("J'AI MIS UNE LICORNE BLANCHE EN ECHEC!!!!!");
+						
 					}
 				}
 
@@ -112,7 +112,7 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 					}
 					if (coup != null && piece.possibleMoves().length != 0 && coup.toX == xLicorne2
 							&& coup.toY == yLicorne2 && piece.player==true) {
-						System.out.println("JE SUIS MIS EN ECHEC(je suis blanc)!!!!!!!!");
+						
 						points=points-200;
 
 
@@ -135,7 +135,7 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 					if (coup != null && piece.possibleMoves().length != 0 && coup.toX == xLicorne
 							&& coup.toY == yLicorne && piece.player==false) {
 						points = points + 60;
-						System.out.println("J'AI MIS UNE LICORNE NOIR EN ECHEC!!!!!");
+						
 					}
 				}
 
