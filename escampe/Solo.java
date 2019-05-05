@@ -53,7 +53,7 @@ public class Solo {
     	System.out.println(s + " : defaultPlayer");
     	// vous devez faire qq chose comme return new MonMeilleurJoueur();
     	if (joueurBlanc != null) {
-    		return new NoLoophole();
+    		return new Random();
     	}
     	return new NoLoophole2();
     }
@@ -137,6 +137,7 @@ public class Solo {
     	}
     	
     	System.out.println("Partie finie en " + nbCoups + " coups.\n");	
+ 
     }
     
     /**

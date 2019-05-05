@@ -68,7 +68,8 @@ public class NoLoophole2 implements IJoueur {
 			// Version théorie des jeux
 			//System.out.println(Arrays.toString(this.board.copy().coupsPossibles(this.joueur)));
 		
-			coup = this.algorithm.meilleurCoup(this.board.copy(), Math.min(nbTours,3));
+			//coup = this.algorithm.meilleurCoup(this.board.copy(), Math.min(nbTours,3));
+			coup = this.algorithm.meilleurCoup(this.board.copy(), 50);
 			if (coup == null) {
 				this.board.lisereActuel = -1;
 				return "E";

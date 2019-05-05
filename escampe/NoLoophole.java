@@ -27,7 +27,7 @@ public class NoLoophole implements IJoueur {
 		this.nomJoueur = (mycolour == 1) ? "noir" : "blanc";
 		this.joueur = new Joueur(this.nomJoueur);
 		this.board = new PlateauEscampe();
-		this.algorithm = new Minimax(new HeuristiqueEscampe(), joueur, new Joueur((mycolour == 1) ? "blanc" : "noir"));
+		this.algorithm = new Minimax2(new HeuristiqueEscampe(), joueur, new Joueur((mycolour == 1) ? "blanc" : "noir"));
 	}
 
 	@Override
@@ -67,12 +67,16 @@ public class NoLoophole implements IJoueur {
 			
 			// Version théorie des jeux
 			//System.out.println(Arrays.toString(this.board.copy().coupsPossibles(this.joueur)));
-		
-			coup = this.algorithm.meilleurCoup(this.board.copy(), Math.min(nbTours,3));
+			coup = this.algorithm.meilleurCoup(this.board.copy(), 500);
 			if (coup == null) {
 				this.board.lisereActuel = -1;
 				return "E";
 			}
+//			coup = this.algorithm.meilleurCoup(this.board.copy(), Math.min(nbTours,3));
+//			if (coup == null) {
+//				this.board.lisereActuel = -1;
+//				return "E";
+//			}
 			System.out.println(coup);
 		}
 		System.out.println(coup);

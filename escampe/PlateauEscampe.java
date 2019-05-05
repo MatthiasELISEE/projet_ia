@@ -24,12 +24,10 @@ public class PlateauEscampe implements PlateauJeu, Etat {
 	String dernierCoup;
 	boolean BlancGagne = false;
 	boolean NoirGagne = false;
-	private Timer timer = new Timer();
 	public Case[][] array;
 	public int secondsPassed = 0;
 	public HashSet<Piece> pieces;
 	boolean partieNull = false;
-	private boolean TimerLance = false;
 
 	public PlateauEscampe copy() {
 		PlateauEscampe returned = new PlateauEscampe();
@@ -48,9 +46,6 @@ public class PlateauEscampe implements PlateauJeu, Etat {
 		returned.partieNull = this.partieNull;
 		returned.BlancGagne = this.BlancGagne;
 		returned.NoirGagne = this.NoirGagne;
-		returned.TimerLance = this.TimerLance;
-		returned.secondsPassed = this.secondsPassed;
-		returned.timer = this.timer;
 
 		returned.pieces = new HashSet<>();
 		for (Piece piece : this.pieces) {
@@ -187,10 +182,6 @@ public class PlateauEscampe implements PlateauJeu, Etat {
 	}
 
 	public void play(String move, String player) {
-		if (this.secondsPassed == 0 && TimerLance == false) {
-			TimerLance = true;
-			startTimer();
-		}
 		this.dernierCoup = move;
 		if (move != "E") {
 			if (move.length() == 5) {
@@ -207,7 +198,7 @@ public class PlateauEscampe implements PlateauJeu, Etat {
 					this.pieces.remove(this.array[c.toX][c.toY].getPiece());
 					this.array[c.fromX][c.fromY].bougerPiece(c);
 				} else {
-					if (this.secondsPassed == 500) {
+					if (this.secondsPassed == 300) {
 						this.partieNull = true;
 					}
 					this.array[c.fromX][c.fromY].bougerPiece(c);
@@ -384,9 +375,6 @@ public class PlateauEscampe implements PlateauJeu, Etat {
 		}
 	};
 
-	public void startTimer() {
-		this.timer.scheduleAtFixedRate(task, 1000, 1000);
-	}
 
 	public boolean gameOver() {
 		if (this.partieNull) {
