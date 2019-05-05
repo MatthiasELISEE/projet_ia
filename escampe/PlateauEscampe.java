@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.nio.file.Files;
 import java.util.List;
-import java.util.TimerTask;
 import iia.jeux.modele.PlateauJeu;
 import iia.jeux.modele.joueur.Joueur;
 
@@ -202,9 +201,7 @@ public class PlateauEscampe implements PlateauJeu {
 					this.joueurActuel = (player == "noir") ? false : true;
 				}
 			} else {
-				System.out.println("good");
 				Coup.debutPartie(move, this, (player == "noir"));
-				System.out.println(this);
 			}
 		}
 	}
@@ -366,13 +363,6 @@ public class PlateauEscampe implements PlateauJeu {
 		}
 	}
 
-	TimerTask task = new TimerTask() {
-		public void run() {
-			secondsPassed++;
-			System.out.println("Seconds passed: " + secondsPassed);
-		}
-	};
-
 
 	public boolean gameOver() {
 		if (this.partieNull) {
@@ -389,26 +379,6 @@ public class PlateauEscampe implements PlateauJeu {
 			return true;
 		}
 		return false;
-	}
-	
-	
-	// Vérifie si les cases du haut sont occupées.
-	public boolean basLibre() {
-		for (Case c : array[4]) {
-			if (c.getPiece()!=null) {
-				System.out.println(c);
-				System.out.println(c.getPiece());
-				return false;
-			}
-		}
-		for (Case c : array[5]) {
-			if (c.getPiece()!=null) {
-				System.out.println(c);
-				System.out.println(c.getPiece());
-				return false;
-			}
-		}
-		return true;
 	}
 	
 	
