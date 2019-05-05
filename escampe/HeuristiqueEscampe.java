@@ -22,11 +22,11 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 	 */
 
 	@Override
-	public int eval(PlateauJeu p, Joueur j) {
+	public int eval(PlateauJeu p, Joueur j, int depth) {
 		int points = 0;
 		PlateauEscampe p2 = (PlateauEscampe) p;
 		if (p2.BlancGagne && !j.bool) {
-			return Integer.MAX_VALUE;
+			return Integer.MAX_VALUE - depth;
 		}
 		if (p2.NoirGagne && j.bool) {
 			return Integer.MIN_VALUE;
