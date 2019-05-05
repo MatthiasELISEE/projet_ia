@@ -406,14 +406,18 @@ public class PlateauEscampe implements PlateauJeu, Etat {
 	
 	
 	// Vérifie si les cases du haut sont occupées.
-	public boolean hautLibre() {
-		for (Case c : array[0]) {
+	public boolean basLibre() {
+		for (Case c : array[4]) {
 			if (c.getPiece()!=null) {
+				System.out.println(c);
+				System.out.println(c.getPiece());
 				return false;
 			}
 		}
-		for (Case c : array[1]) {
+		for (Case c : array[5]) {
 			if (c.getPiece()!=null) {
+				System.out.println(c);
+				System.out.println(c.getPiece());
 				return false;
 			}
 		}
