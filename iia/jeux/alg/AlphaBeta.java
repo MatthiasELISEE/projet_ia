@@ -80,6 +80,8 @@ public class AlphaBeta implements AlgoJeu {
 		this.profMax = profMax;
 		String meilleur_coup = null;
 		int meilleur_score = Integer.MIN_VALUE;
+		System.out.println("plateau :");
+		System.out.println(p);
 		for (String coup : p.coupsPossibles(joueurMax)) {
 			PlateauJeu mlp = p.copy();
 			mlp.joue(joueurMax, coup);

@@ -83,23 +83,25 @@ public class ClientJeu {
 	    	
 	    	// Lit le contenu du message, toutes les infos du message
 	    	msgTokenizer = new StringTokenizer(msg, " \n\0");
+	    	System.out.println(msg);
 	    	if ((msgTokenizer.nextToken()).equals("Blanc")) {
 	    		System.out.println("Je suis Blanc, j'attends le mouvement de Noir.");
-	    		maCouleur = BLANC;
+		    	joueur.initJoueur(BLANC);
+	    		msg = in.readLine();
+		    	maCouleur = BLANC;
 	    	}
 	    	else { // doit etre égal à "Noir"
 	    		System.out.println("Je suis Noir, c'est à moi de jouer.");
-	    		maCouleur = NOIR;
+		    	joueur.initJoueur(NOIR);
+		    	maCouleur = NOIR;
 	    	}
 	    	
 	    	// permet d'initialiser votre joueur avec sa couleur
-	    	joueur.initJoueur(maCouleur);
-	    	
 	    	// boucle générale de jeu
 	    	do {
 	    		// Lire le msg à partir du serveur
 	    		msg = in.readLine();
-	    		
+		    	System.out.println("######SERVEUR###### : "+msg);
 	    		msgTokenizer = new StringTokenizer(msg, " \n\0");
 	    		firstToken = msgTokenizer.nextToken();
 	    		
@@ -138,6 +140,7 @@ public class ClientJeu {
 	    			}
 	    		}
 	    		else if (firstToken.equals("MOUVEMENT")) {
+	    			System.out.println(",," + msg);
 	    			// On lit ce que joue le joueur et on l'envoie à l'autre
 	    			joueur.mouvementEnnemi(msgTokenizer.nextToken());
 	    		}

@@ -183,7 +183,7 @@ public class PlateauEscampe implements PlateauJeu, Etat {
 
 	public void play(String move, String player) {
 		this.dernierCoup = move;
-		if (move != "E") {
+		if (!move.equals("E")) {
 			if (move.length() == 5) {
 				Coup c = new Coup(move);
 				if (!this.array[c.fromX][c.fromY].piece.licorne && this.array[c.toX][c.toY].getPiece() != null
@@ -206,7 +206,9 @@ public class PlateauEscampe implements PlateauJeu, Etat {
 					this.joueurActuel = (player == "noir") ? false : true;
 				}
 			} else {
+				System.out.println("good");
 				Coup.debutPartie(move, this, (player == "noir"));
+				System.out.println(this);
 			}
 		}
 	}
@@ -401,7 +403,27 @@ public class PlateauEscampe implements PlateauJeu, Etat {
 	 * 
 	 * }
 	 */
-
+	
+	
+	// Vérifie si les cases du haut sont occupées.
+	public boolean hautLibre() {
+		for (Case c : array[0]) {
+			if (c.getPiece()!=null) {
+				return false;
+			}
+		}
+		for (Case c : array[1]) {
+			if (c.getPiece()!=null) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	
+	// Interface PlateauJeu
+	
+	
 	@Override
 	public String[] coupsPossibles(Joueur j) {
 		return this.possibleMoves(j.toString());

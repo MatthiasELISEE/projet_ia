@@ -27,7 +27,7 @@ public class NoLoophole implements IJoueur {
 		this.nomJoueur = (mycolour == 1) ? "noir" : "blanc";
 		this.joueur = new Joueur(this.nomJoueur);
 		this.board = new PlateauEscampe();
-		this.algorithm = new Minimax2(new HeuristiqueEscampe(), joueur, new Joueur((mycolour == 1) ? "blanc" : "noir"));
+		this.algorithm = new Minimax(new HeuristiqueEscampe(), joueur, new Joueur((mycolour == 1) ? "blanc" : "noir"));
 	}
 
 	@Override
