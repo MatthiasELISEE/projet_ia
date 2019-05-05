@@ -135,17 +135,18 @@ public class Minimax implements AlgoJeu {
 			return h.eval(p.copy(), this.joueurMax) ;
 		};
 		if (player) {
-			value = Integer.MAX_VALUE;
+			value = Integer.MIN_VALUE;
 			
 			p.joue(joueurMax, coup);
 			for (int i = 0; i < p.coupsPossibles(joueurMin).length; i++) {
-				value = Math.min(value, this.minimax(p.copy(),  p.coupsPossibles(joueurMin)[i], depth + 1, false));
+				value = Math.max(value, this.minimax(p.copy(),  p.coupsPossibles(joueurMin)[i], depth + 1, false));
 			}
 		} else {
-			value = Integer.MIN_VALUE;
+			value = Integer.MAX_VALUE;
+			
 			p.joue(joueurMin, coup);
 			for (int i = 0; i < p.coupsPossibles(joueurMax).length; i++) {
-				value = Math.max(value, this.minimax(p.copy(),  p.coupsPossibles(joueurMax)[i], depth + 1, true));
+				value = Math.min(value, this.minimax(p.copy(),  p.coupsPossibles(joueurMax)[i], depth + 1, true));
 			}
 		}
 		return value;
