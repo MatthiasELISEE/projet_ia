@@ -55,7 +55,7 @@ public class AlphaBeta implements AlgoJeu {
 	}
 
 	public AlphaBeta(Heuristique h, Joueur joueurMax, Joueur joueurMin, int alpha, int beta) {
-		this(h, joueurMax, joueurMin, alpha, beta, PROFMAXDEFAUT);
+		this(h, joueurMax, joueurMin, PROFMAXDEFAUT, alpha, beta);
 	}
 
 	public AlphaBeta(Heuristique h, Joueur joueurMax, Joueur joueurMin, int profMaxi, int alpha, int beta) {
@@ -117,7 +117,7 @@ public class AlphaBeta implements AlgoJeu {
 		this.nbnoeuds++;
 		if (depth <= 0 || p.finDePartie()) {
 			this.nbfeuilles++;
-			return h.eval(p, this.joueurMax);
+			return h.eval(p, this.joueurMax, depth);
 		} else {
 			for (String kiddo : p.coupsPossibles(joueurMax)) {
 				PlateauJeu mlp = p.copy();
