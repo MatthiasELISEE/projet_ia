@@ -1,7 +1,5 @@
 package escampe;
 
-import iia.espacesEtats.modeles.*;
-import iia.jeux.alg.*;
 import iia.jeux.modele.PlateauJeu;
 import iia.jeux.modele.joueur.Joueur;
 
@@ -26,10 +24,10 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 		int points = 0;
 		PlateauEscampe p2 = (PlateauEscampe) p;
 		if (p2.BlancGagne && !j.bool) {
-			return Integer.MAX_VALUE-depth;
+			return Integer.MAX_VALUE - depth;
 		}
 		if (p2.NoirGagne && j.bool) {
-			return Integer.MAX_VALUE-depth;
+			return Integer.MAX_VALUE - depth;
 		}
 		if (p2.BlancGagne && j.bool) {
 			return Integer.MIN_VALUE;
@@ -38,22 +36,20 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 			return Integer.MIN_VALUE;
 		}
 		if (j.bool) {
-
 			// si je suis mis en echec par une piÃ¨ce
 			int xLicorne1 = -1;
-			int yLicorne1 =-1;
+			int yLicorne1 = -1;
 			for (Piece piece : p2.pieces) {
-				if(piece.player==false || piece.player && piece.licorne) {
+				if (piece.player == false || piece.player && piece.licorne) {
 					for (Coup coup : piece.possibleMoves()) {
-						if(piece.licorne && piece.player) {
+						if (piece.licorne && piece.player) {
 							xLicorne1 = piece.x;
 							yLicorne1 = piece.y;
 						}
 						if (coup != null && piece.possibleMoves().length != 0 && coup.toX == xLicorne1
-								&& coup.toY == yLicorne1 && piece.player==false) {
+								&& coup.toY == yLicorne1 && piece.player == false) {
 
-							points=points-200; 
-
+							points = points - 200;
 
 						}
 					}
@@ -62,25 +58,23 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 
 			// si je met la licorne adverse en echec
 			int xLicorne = -1;
-			int yLicorne =-1;
+			int yLicorne = -1;
 			for (Piece piece : p2.pieces) {
 
 				for (Coup coup : piece.possibleMoves()) {
 
-					if(piece.licorne && piece.player==false) {
+					if (piece.licorne && piece.player == false) {
 						xLicorne = piece.x;
 						yLicorne = piece.y;
 					}
 					if (coup != null && piece.possibleMoves().length != 0 && coup.toX == xLicorne
-							&& coup.toY == yLicorne && piece.player==true) {
+							&& coup.toY == yLicorne && piece.player == true) {
 						points = points + 60;
 
 					}
 				}
 
 			}
-
-
 
 			// chaque coup possible rapporte des points
 			for (Piece piece : p2.pieces) {
@@ -104,23 +98,22 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 			}
 
 			return points;
-		} if(j.bool==false){
-
+		}
+		if (j.bool == false) {
 
 			// si je suis mis en echec par une piÃ¨ce
 			int xLicorne2 = -1;
-			int yLicorne2 =-1;
+			int yLicorne2 = -1;
 			for (Piece piece : p2.pieces) {
 				for (Coup coup : piece.possibleMoves()) {
-					if(piece.licorne && piece.player==false) {
+					if (piece.licorne && piece.player == false) {
 						xLicorne2 = piece.x;
 						yLicorne2 = piece.y;
 					}
 					if (coup != null && piece.possibleMoves().length != 0 && coup.toX == xLicorne2
-							&& coup.toY == yLicorne2 && piece.player==true) {
+							&& coup.toY == yLicorne2 && piece.player == true) {
 
-						points=points-200;
-
+						points = points - 200;
 
 					}
 				}
@@ -129,24 +122,23 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 
 			// si je met la licorne adverse en echec
 			int xLicorne = -1;
-			int yLicorne =-1;
+			int yLicorne = -1;
 			for (Piece piece : p2.pieces) {
 
 				for (Coup coup : piece.possibleMoves()) {
 
-					if(piece.licorne && piece.player==true) {
+					if (piece.licorne && piece.player == true) {
 						xLicorne = piece.x;
 						yLicorne = piece.y;
 					}
 					if (coup != null && piece.possibleMoves().length != 0 && coup.toX == xLicorne
-							&& coup.toY == yLicorne && piece.player==false) {
+							&& coup.toY == yLicorne && piece.player == false) {
 						points = points + 60;
 
 					}
 				}
 
 			}
-
 
 			// chaque coup possible rapporte des points
 			for (Piece piece : p2.pieces) {
@@ -179,8 +171,3 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 	}
 
 }
-
-
-
-
-
