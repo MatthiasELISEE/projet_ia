@@ -130,21 +130,24 @@ public class Minimax implements AlgoJeu {
 		if (this.nbnoeuds % 10000 == 0) {
 			System.out.print("#");
 		}
-		if (depth >= this.profMax || this.terminal(p)) {
+		if (this.nbfeuilles % 100 == 0) {
+			System.out.print("-");
+		}
+		if (depth >= this.profMax || p.finDePartie()) {
 			this.nbfeuilles++;
 			return h.eval(p.copy(), this.joueurMax, depth) ;
 		};
 		if (player) {
-			value = Integer.MIN_VALUE;
+			p.joue(joueurMin, coup);
 			
-			p.joue(joueurMax, coup);
+			value = Integer.MIN_VALUE;
 			for (int i = 0; i < p.coupsPossibles(joueurMax).length; i++) {
 				value = Math.max(value, this.minimax(p.copy(),  p.coupsPossibles(joueurMax)[i], depth + 1, false));
 			}
 		} else {
-			value = Integer.MAX_VALUE;
+			p.joue(joueurMax, coup);
 			
-			p.joue(joueurMin, coup);
+			value = Integer.MAX_VALUE;
 			for (int i = 0; i < p.coupsPossibles(joueurMin).length; i++) {
 				value = Math.min(value, this.minimax(p.copy(),  p.coupsPossibles(joueurMin)[i], depth + 1, true));
 			}
