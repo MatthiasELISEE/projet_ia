@@ -26,14 +26,20 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 		int points = 0;
 		PlateauEscampe p2 = (PlateauEscampe) p;
 		if (p2.BlancGagne && !j.bool) {
-			return Integer.MAX_VALUE - depth;
+			return Integer.MAX_VALUE-depth;
 		}
 		if (p2.NoirGagne && j.bool) {
+			return Integer.MAX_VALUE-depth;
+		}
+		if (p2.BlancGagne && j.bool) {
+			return Integer.MIN_VALUE;
+		}
+		if (p2.NoirGagne && !j.bool) {
 			return Integer.MIN_VALUE;
 		}
 		if (j.bool) {
 
-			// si je suis mis en echec par une pièce
+			// si je suis mis en echec par une piÃ¨ce
 			int xLicorne1 = -1;
 			int yLicorne1 =-1;
 			for (Piece piece : p2.pieces) {
@@ -45,7 +51,7 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 						}
 						if (coup != null && piece.possibleMoves().length != 0 && coup.toX == xLicorne1
 								&& coup.toY == yLicorne1 && piece.player==false) {
-							
+
 							points=points-200; 
 
 
@@ -68,7 +74,7 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 					if (coup != null && piece.possibleMoves().length != 0 && coup.toX == xLicorne
 							&& coup.toY == yLicorne && piece.player==true) {
 						points = points + 60;
-						
+
 					}
 				}
 
@@ -101,7 +107,7 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 		} if(j.bool==false){
 
 
-			// si je suis mis en echec par une pièce
+			// si je suis mis en echec par une piÃ¨ce
 			int xLicorne2 = -1;
 			int yLicorne2 =-1;
 			for (Piece piece : p2.pieces) {
@@ -112,7 +118,7 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 					}
 					if (coup != null && piece.possibleMoves().length != 0 && coup.toX == xLicorne2
 							&& coup.toY == yLicorne2 && piece.player==true) {
-						
+
 						points=points-200;
 
 
@@ -135,7 +141,7 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 					if (coup != null && piece.possibleMoves().length != 0 && coup.toX == xLicorne
 							&& coup.toY == yLicorne && piece.player==false) {
 						points = points + 60;
-						
+
 					}
 				}
 
