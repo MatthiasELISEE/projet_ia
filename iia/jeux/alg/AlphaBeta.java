@@ -55,8 +55,6 @@ public class AlphaBeta implements AlgoJeu {
 	 */
 	private int nbfeuilles;
 
-	private String coup;
-
 	// -------------------------------------------
 	// Constructeurs
 	// -------------------------------------------
@@ -89,11 +87,7 @@ public class AlphaBeta implements AlgoJeu {
 		System.out.println("Profondeur Maximale : " + profMax);
 
 		for (int i = 0; i < coupsPossibles.length; i++) {
-			// System.out.println(p);
-			// System.out.println(coupsPossibles[i]);
-			// PlateauJeu mlp = p.copy();
-			// mlp.joue(joueurMax, coup);
-			this.coup = coupsPossibles[i];
+			// Eviter les répétitions
 			PlateauJeu p2 = p.copy();
 			p2.joue(joueurMax, coupsPossibles[i]);
 			System.out.println(coupsPossibles[i]);
@@ -139,7 +133,7 @@ public class AlphaBeta implements AlgoJeu {
 		}
 		if (depth >= this.profMax || p.finDePartie()) {
 			this.nbfeuilles++;
-//			System.out.println("~~");
+			// System.out.println("~~");
 			return h.eval(p.copy(), this.joueurMax, depth);
 		}
 
@@ -148,13 +142,12 @@ public class AlphaBeta implements AlgoJeu {
 			for (int i = 0; i < p.coupsPossibles(joueurMax).length; i++) {
 				PlateauJeu p2 = p.copy();
 				p2.joue(joueurMax, p.coupsPossibles(joueurMax)[i]);
-				
+
 				minimax_value = this.minimax(p2, depth + 1, false, alpha, beta);
 				if (alpha > minimax_value) {
 					alpha = minimax_value;
 				}
 				if (alpha >= beta) {
-					System.out.println("/b");
 					return beta;
 				}
 			}
@@ -162,13 +155,12 @@ public class AlphaBeta implements AlgoJeu {
 			for (int i = 0; i < p.coupsPossibles(joueurMin).length; i++) {
 				PlateauJeu p2 = p.copy();
 				p2.joue(joueurMin, p.coupsPossibles(joueurMin)[i]);
-				
+
 				minimax_value = this.minimax(p2, depth + 1, true, alpha, beta);
 				if (beta < minimax_value) {
 					beta = minimax_value;
 				}
 				if (beta <= alpha) {
-					System.out.println("/a");
 					return alpha;
 				}
 			}

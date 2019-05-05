@@ -52,10 +52,10 @@ public class Solo {
     private static IJoueur getDefaultPlayer(String s) {
     	System.out.println(s + " : defaultPlayer");
     	// vous devez faire qq chose comme return new MonMeilleurJoueur();
-    	if (joueurBlanc != null) {
+    	/*if (joueurBlanc != null) {
     		return new Random();
-    	}
-    	return new NoLoophole2();
+    	}*/
+    	return new NoLoophole();
     }
     
     /**
