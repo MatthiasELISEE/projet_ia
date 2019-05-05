@@ -5,20 +5,6 @@ import iia.jeux.modele.joueur.Joueur;
 
 public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 
-	/*
-	 * Theorie des jeux
-	 * 
-	 * @Override public int eval(PlateauJeu p, Joueur j) { if (p.finDePartie()) {
-	 * PlateauEscampe p2 = (PlateauEscampe) p; if ((p2.NoirGagne && j.NOIR) ||
-	 * (p2.BlancGagne && !j.NOIR)) { return Integer.MAX_VALUE; } else if
-	 * ((p2.NoirGagne && !j.NOIR) || (p2.BlancGagne && j.NOIR)) { return
-	 * Integer.MIN_VALUE; } else { return 0; } } else {
-	 * 
-	 * }
-	 * 
-	 * return 0; } }
-	 */
-
 	@Override
 	public int eval(PlateauJeu p, Joueur j, int depth) {
 		int points = 0;
@@ -169,5 +155,4 @@ public class HeuristiqueEscampe implements iia.jeux.alg.Heuristique {
 
 		return points;
 	}
-
 }

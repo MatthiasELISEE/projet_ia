@@ -2,8 +2,6 @@ package escampe;
 
 
 import java.util.Date;
-import escampe.PlateauEscampe;
-import javax.swing.JFrame;
 
 /**
  * Petite Classe toute simple qui vous montre comment on peut lancer une partie sur deux IJoueurs...
@@ -23,12 +21,10 @@ import javax.swing.JFrame;
 public class Solo {
     private static IJoueur joueurBlanc;
     private static IJoueur joueurNoir;
-    private PlateauEscampe board;
     
     // Ne pas modifier ces constantes, elles seront utilisees par l'arbitre
     private final static int BLANC = -1;
     private final static int NOIR = 1;
-    private static PlateauEscampe PlateauCourant = new PlateauEscampe();
     
     private static int nbCoups = 0;
     

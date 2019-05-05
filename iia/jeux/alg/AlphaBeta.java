@@ -4,12 +4,8 @@
 
 package iia.jeux.alg;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-
-import escampe.HeuristiqueEscampe;
 import escampe.PlateauEscampe;
-import iia.jeux.modele.CoupJeu;
 import iia.jeux.modele.PlateauJeu;
 import iia.jeux.modele.joueur.Joueur;
 
@@ -82,8 +78,8 @@ public class AlphaBeta implements AlgoJeu {
 		String meilleur_coup = null;
 		int meilleur_score = Integer.MIN_VALUE;
 		String[] coupsPossibles = p.coupsPossibles(joueurMax);
-		int[] scores = new int[100];
-		System.out.println("Voici le lisereActuel: " + ((PlateauEscampe) p).lisereActuel);
+		int[] scores = new int[coupsPossibles.length];
+		System.out.println("Voici le lisereActuel : " + ((PlateauEscampe) p).lisereActuel);
 		System.out.println("Profondeur Maximale : " + profMax);
 
 		for (int i = 0; i < coupsPossibles.length; i++) {

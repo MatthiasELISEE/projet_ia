@@ -1,15 +1,8 @@
-/**
- * 
- */
-
 package iia.jeux.alg;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
-import escampe.HeuristiqueEscampe;
 import escampe.PlateauEscampe;
-import iia.jeux.modele.CoupJeu;
 import iia.jeux.modele.PlateauJeu;
 import iia.jeux.modele.joueur.Joueur;
 
@@ -55,8 +48,6 @@ public class Minimax implements AlgoJeu {
 	 */
 	private int nbfeuilles;
 
-	private String coup;
-
 	// -------------------------------------------
 	// Constructeurs
 	// -------------------------------------------
@@ -84,16 +75,11 @@ public class Minimax implements AlgoJeu {
 		String meilleur_coup = null;
 		int meilleur_score = Integer.MIN_VALUE;
 		String[] coupsPossibles = p.coupsPossibles(joueurMax);
-		int[] scores = new int[100];
-		System.out.println("Voici le lisereActuel: " + ((PlateauEscampe) p).lisereActuel);
+		int[] scores = new int[coupsPossibles.length];
+		System.out.println("Voici le lisereActuel : " + ((PlateauEscampe) p).lisereActuel);
 		System.out.println("Profondeur Maximale : " + profMax);
 
 		for (int i = 0; i < coupsPossibles.length; i++) {
-			// System.out.println(p);
-			// System.out.println(coupsPossibles[i]);
-			// PlateauJeu mlp = p.copy();
-			// mlp.joue(joueurMax, coup);
-			this.coup = coupsPossibles[i];
 			PlateauJeu p2 = p.copy();
 			p2.joue(joueurMax, coupsPossibles[i]);
 			System.out.println(coupsPossibles[i]);
@@ -133,14 +119,11 @@ public class Minimax implements AlgoJeu {
 	public int minimax(PlateauJeu p, int depth, boolean player) {
 		this.nbnoeuds++;
 		Integer returned = null;
-		// System.out.println(depth >= this.profMax );
-		// System.out.println(p);
 		if (this.nbnoeuds % 10000 == 0) {
 			System.out.print("#");
 		}
 		if (depth >= this.profMax || p.finDePartie()) {
 			this.nbfeuilles++;
-//			System.out.println("~~");
 			return h.eval(p.copy(), this.joueurMax, depth);
 		}
 
@@ -149,7 +132,7 @@ public class Minimax implements AlgoJeu {
 			for (int i = 0; i < p.coupsPossibles(joueurMax).length; i++) {
 				PlateauJeu p2 = p.copy();
 				p2.joue(joueurMax, p.coupsPossibles(joueurMax)[i]);
-				
+
 				minimax_value = this.minimax(p2, depth + 1, false);
 				if (returned == null || returned < minimax_value) {
 					returned = minimax_value;

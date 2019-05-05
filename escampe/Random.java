@@ -1,13 +1,6 @@
 package escampe;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-
-import iia.espacesEtats.algorithmes.*;
-import iia.espacesEtats.modeles.Etat;
-import iia.espacesEtats.modeles.Solution;
 import iia.jeux.alg.*;
-import iia.jeux.modele.*;
 import iia.jeux.modele.joueur.*;
 
 public class Random implements IJoueur {
@@ -15,7 +8,6 @@ public class Random implements IJoueur {
 	private int numJoueur;
 	public String nomJoueur;
 	private PlateauEscampe board;
-	private ProblemeEscampeSimple probleme;
 	private AlgoJeu algorithm;
 	private Joueur joueur;
 
@@ -25,7 +17,7 @@ public class Random implements IJoueur {
 		this.nomJoueur = (mycolour == 1) ? "noir" : "blanc";
 		this.joueur = new Joueur(this.nomJoueur);
 		this.board = new PlateauEscampe();
-		this.algorithm = new Ryanndom(new HeuristiqueEscampe(), joueur, new Joueur((mycolour == 1) ? "blanc" : "noir"));
+		this.algorithm = new JoueurRandom(new HeuristiqueEscampe(), joueur, new Joueur((mycolour == 1) ? "blanc" : "noir"));
 	}
 
 	@Override

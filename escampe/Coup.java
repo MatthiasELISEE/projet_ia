@@ -1,8 +1,6 @@
 package escampe;
 
-import iia.jeux.modele.CoupJeu;
-
-public class Coup implements CoupJeu {
+public class Coup {
 	int fromX;
 	int fromY;
 	int toX;

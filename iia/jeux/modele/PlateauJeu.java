@@ -2,8 +2,6 @@ package iia.jeux.modele;
 
 import iia.jeux.modele.joueur.Joueur;
 
-import java.util.ArrayList;
-
 public interface PlateauJeu {
 
     /** renvoie la liste des coups possibles
@@ -37,7 +35,7 @@ public interface PlateauJeu {
      * @param j	Le joueur qui pourrait jouer ce coup
      * @param c Le coup envisagé par le joueur
      */
-    public abstract boolean coupValide(Joueur j, CoupJeu c);
+    public abstract boolean coupValide(Joueur j, String c);
 
 	public abstract void printPoints();
 

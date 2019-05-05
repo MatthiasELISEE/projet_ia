@@ -1,14 +1,6 @@
 package escampe;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
-
-import iia.espacesEtats.algorithmes.*;
-import iia.espacesEtats.modeles.Etat;
-import iia.espacesEtats.modeles.Solution;
 import iia.jeux.alg.*;
-import iia.jeux.modele.*;
 import iia.jeux.modele.joueur.*;
 
 public class NoLoophole implements IJoueur {
@@ -17,7 +9,6 @@ public class NoLoophole implements IJoueur {
 	private int nbTours = 0;
 	public String nomJoueur;
 	private PlateauEscampe board;
-	private ProblemeEscampeSimple probleme;
 	private AlgoJeu algorithm;
 	private Joueur joueur;
 
@@ -49,7 +40,6 @@ public class NoLoophole implements IJoueur {
 			coup = "A1/B2/C1/D2/E1/F2";
 		} else if (board.pieces.size() == 6) {
 			for (Piece p : board.pieces) {
-				System.out.println(p);
 				if (p.getX() >= 1) {
 					coup = "A6/B5/C6/D5/E6/F5";
 				} else {
@@ -60,27 +50,8 @@ public class NoLoophole implements IJoueur {
 			if (board.gameOver()) {
 				return "GameOver";
 			}
-			// Version graphe d'Etat
-			// Solution solution = new
-			// Solution();//algorithm.chercheSolution(this.probleme);
-			// if (solution == null) {
-			// return "E";
-			// }
-			// Iterator<Etat> itr = solution.descendingIterator();
-			// System.out.println(solution);
-			// System.out.println(((PlateauEscampe)solution.getLast()).dernierCoup);
-			// System.out.println(((PlateauEscampe)solution.getFirst()).dernierCoup);
-			//
-			// if (itr.hasNext()) {
-			// coup = ((PlateauEscampe) itr.next()).dernierCoup;
-			// }
-			// coup = ((PlateauEscampe) solution.get(0)).dernierCoup;
-
-			// Version théorie des jeux
-			// System.out.println(Arrays.toString(this.board.copy().coupsPossibles(this.joueur)));
 
 			coup = this.algorithm.meilleurCoup(this.board.copy(), Math.min(2* nbTours, 50));
-			// coup = this.algorithm.meilleurCoup(this.board.copy(), 50);
 			if (coup == null) {
 				this.board.lisereActuel = -1;
 				return "E";

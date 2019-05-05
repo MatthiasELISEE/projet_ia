@@ -5,18 +5,14 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.nio.file.Files;
 import java.util.List;
-import java.util.Timer;
 import java.util.TimerTask;
-import iia.espacesEtats.modeles.*;
-import iia.jeux.modele.CoupJeu;
 import iia.jeux.modele.PlateauJeu;
 import iia.jeux.modele.joueur.Joueur;
 
-public class PlateauEscampe implements PlateauJeu, Etat {
+public class PlateauEscampe implements PlateauJeu {
 
 	public int lisereActuel = -1;
 
@@ -394,15 +390,6 @@ public class PlateauEscampe implements PlateauJeu, Etat {
 		}
 		return false;
 	}
-	/*
-	 * public static void main(String[] args) throws IOException {
-	 * 
-	 * EtatEscampe b = new EtatEscampe(); b.startTimer();
-	 * 
-	 * b.setFromFile("Test"); b.saveToFile("test.txt");
-	 * 
-	 * }
-	 */
 	
 	
 	// Vérifie si les cases du haut sont occupées.
@@ -444,9 +431,8 @@ public class PlateauEscampe implements PlateauJeu, Etat {
 	}
 
 	@Override
-	public boolean coupValide(Joueur j, CoupJeu c) {
-		Coup coupEscampe = (Coup) c;
-		return this.isValidMove(coupEscampe.toString(), j.toString());
+	public boolean coupValide(Joueur j, String c) {
+		return this.isValidMove(c, j.toString());
 	}
 
 	@Override
