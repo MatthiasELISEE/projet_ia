@@ -1,17 +1,24 @@
+/**
+ * 
+ */
+
 package iia.jeux.alg;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
+import escampe.HeuristiqueEscampe;
 import escampe.PlateauEscampe;
 import iia.jeux.modele.CoupJeu;
 import iia.jeux.modele.PlateauJeu;
 import iia.jeux.modele.joueur.Joueur;
 
 public class AlphaBeta implements AlgoJeu {
+
 	/**
 	 * La profondeur de recherche par défaut
 	 */
-	private final static int PROFMAXDEFAUT = 3;
+	private final static int PROFMAXDEFAUT = 50;
 
 	// -------------------------------------------
 	// Attributs
@@ -26,16 +33,14 @@ public class AlphaBeta implements AlgoJeu {
 	 * L'heuristique utilisée par l'algorithme
 	 */
 	private Heuristique h;
-	private int alpha;
-	private int beta;
+
 	/**
 	 * Le joueur Min (l'adversaire)
 	 */
 	private Joueur joueurMin;
 
 	/**
-	 * Le joueur Max (celui dont l'algorithme de recherche adopte le point de
-	 * vue)
+	 * Le joueur Max (celui dont l'algorithme de recherche adopte le point de vue)
 	 */
 	private Joueur joueurMax;
 
@@ -50,62 +55,61 @@ public class AlphaBeta implements AlgoJeu {
 	 */
 	private int nbfeuilles;
 
+	private String coup;
+
 	// -------------------------------------------
 	// Constructeurs
 	// -------------------------------------------
 	public AlphaBeta(Heuristique h, Joueur joueurMax, Joueur joueurMin) {
-		this(h, joueurMax, joueurMin, Integer.MIN_VALUE + 1, Integer.MAX_VALUE, PROFMAXDEFAUT);
+		this(h, joueurMax, joueurMin, PROFMAXDEFAUT);
 	}
 
-	public AlphaBeta(Heuristique h, Joueur joueurMax, Joueur joueurMin, int alpha, int beta) {
-		this(h, joueurMax, joueurMin, PROFMAXDEFAUT, alpha, beta);
-	}
-
-	public AlphaBeta(Heuristique h, Joueur joueurMax, Joueur joueurMin, int profMaxi, int alpha, int beta) {
+	public AlphaBeta(Heuristique h, Joueur joueurMax, Joueur joueurMin, int profMaxi) {
 		this.h = h;
-	
 		this.joueurMin = joueurMin;
 		this.joueurMax = joueurMax;
 		profMax = profMaxi;
-		System.out.println("Initialisation d'un AlphaBeta de profondeur " + profMax + " beta vaut = " + this.beta
-				+ " joueurMax est : " + this.joueurMax);
+		System.out.println("Initialisation d'un AlphaBeta2 de profondeur " + profMax);
 	}
 
-	
-	
-	
 	// -------------------------------------------
 	// Méthodes de l'interface AlgoJeu
 	// -------------------------------------------
 	public String meilleurCoup(PlateauJeu p, int profMax) {
 		this.profMax = profMax;
-		System.out.println("voici le joueurMax: "+joueurMax);
+		System.out.println("voici le joueurMax: " + joueurMax);
 		System.out.println(p);
-		this.nbfeuilles = 0;
 		this.nbnoeuds = 0;
+		this.nbfeuilles = 0;
 		String meilleur_coup = null;
 		int meilleur_score = Integer.MIN_VALUE;
 		String[] coupsPossibles = p.coupsPossibles(joueurMax);
 		int[] scores = new int[100];
-		System.out.println("Voici le lisereActuel: "+((PlateauEscampe)p).lisereActuel);
+		System.out.println("Voici le lisereActuel: " + ((PlateauEscampe) p).lisereActuel);
+		System.out.println("Profondeur Maximale : " + profMax);
+
 		for (int i = 0; i < coupsPossibles.length; i++) {
-			//System.out.println(p);
-			//System.out.println(coupsPossibles[i]);
-			//PlateauJeu mlp = p.copy();
-			//mlp.joue(joueurMax, coup);
-			int score = this.alphabeta(p.copy(), 0, this.alpha, this.beta);
+			// System.out.println(p);
+			// System.out.println(coupsPossibles[i]);
+			// PlateauJeu mlp = p.copy();
+			// mlp.joue(joueurMax, coup);
+			this.coup = coupsPossibles[i];
+			PlateauJeu p2 = p.copy();
+			p2.joue(joueurMax, coupsPossibles[i]);
+			System.out.println(coupsPossibles[i]);
+			int score = this.minimax(p2, 0, false, Integer.MAX_VALUE, Integer.MIN_VALUE);
 			scores[i] = score;
 			if (meilleur_score <= score) {
 				meilleur_score = score;
 				meilleur_coup = coupsPossibles[i];
 			}
 		}
-		System.out.println("coups possibles avec AlphaBeta: "+Arrays.toString(coupsPossibles));
-		System.out.println("score avec AlphaBeta: "+Arrays.toString(scores));
-		System.out.println("meilleur coup avec AlphaBeta: "+meilleur_coup);
-		System.out.println("profondeur avec AlphaBeta: "+this.profMax);
-		System.out.println("noeuds analysés : " + this.nbnoeuds + " ; feuilles analysées : "+ this.nbfeuilles);
-		
+		System.out.println("Voici les coups possibles avec AlphaBeta2: " + Arrays.toString(coupsPossibles));
+		System.out.println("Voici le score avec AlphaBeta2: " + Arrays.toString(scores));
+		System.out.println("Voici le meilleur coup avec AlphaBeta2: " + meilleur_coup);
+		System.out.println("Voici la profondeur avec AlphaBeta2: " + this.profMax);
+		System.out.println("noeuds analysés : " + this.nbnoeuds + " ; feuilles analysées : " + this.nbfeuilles);
+
 		return meilleur_coup;
 	}
 
@@ -113,51 +117,66 @@ public class AlphaBeta implements AlgoJeu {
 	// Méthodes publiques
 	// -------------------------------------------
 	public String toString() {
-		return "AlphaBeta(ProfMax=" + profMax + ")";
+		return "AlphaBeta2(ProfMax=" + profMax + ")";
 	}
 
 	// -------------------------------------------
 	// Méthodes internes
 	// -------------------------------------------
 
+	// A vous de jouer pour implanter AlphaBeta2
 
-
-	public int alphabeta(PlateauJeu p, int depth, int alpha, int beta) {
-		return maxMin(p, depth, alpha, beta);
+	public boolean terminal(PlateauJeu p) {
+		return p.finDePartie();
 	}
 
-
-	public int maxMin(PlateauJeu p, int depth, int alpha, int beta) {
+	public int minimax(PlateauJeu p, int depth, boolean player, int alpha, int beta) {
 		this.nbnoeuds++;
+		// System.out.println(depth >= this.profMax );
+		// System.out.println(p);
+		if (this.nbnoeuds % 10000 == 0) {
+			System.out.print("#");
+		}
 		if (depth >= this.profMax || p.finDePartie()) {
 			this.nbfeuilles++;
-			return h.eval(p, this.joueurMax, depth);
-		} else {
-			for (String kiddo : p.coupsPossibles(joueurMax)) {
-				p.joue(joueurMax, kiddo);
-				alpha = Math.max(alpha, minMax(p.copy(), depth + 1, alpha, beta));
+//			System.out.println("~~");
+			return h.eval(p.copy(), this.joueurMax, depth);
+		}
+
+		Integer minimax_value = null;
+		if (player) {
+			for (int i = 0; i < p.coupsPossibles(joueurMax).length; i++) {
+				PlateauJeu p2 = p.copy();
+				p2.joue(joueurMax, p.coupsPossibles(joueurMax)[i]);
+				
+				minimax_value = this.minimax(p2, depth + 1, false, alpha, beta);
+				if (alpha > minimax_value) {
+					alpha = minimax_value;
+				}
 				if (alpha >= beta) {
+					System.out.println("/b");
 					return beta;
 				}
 			}
-		}
-		return alpha;
-	}
-
-	public int minMax(PlateauJeu p, int depth, int alpha, int beta) {
-		this.nbnoeuds++;
-		if (depth >= this.profMax || p.finDePartie()) {
-			this.nbfeuilles++;
-			return h.eval(p, this.joueurMin, depth);
 		} else {
-			for (String kiddo : p.coupsPossibles(joueurMax)) {
-				p.joue(joueurMin, kiddo);
-				beta = Math.min(beta, maxMin(p.copy(), depth + 1, alpha, beta));
-				if (alpha >= beta) {
+			for (int i = 0; i < p.coupsPossibles(joueurMin).length; i++) {
+				PlateauJeu p2 = p.copy();
+				p2.joue(joueurMin, p.coupsPossibles(joueurMin)[i]);
+				
+				minimax_value = this.minimax(p2, depth + 1, true, alpha, beta);
+				if (beta < minimax_value) {
+					beta = minimax_value;
+				}
+				if (beta <= alpha) {
+					System.out.println("/a");
 					return alpha;
 				}
 			}
 		}
-		return beta;
+		if (minimax_value == null) {
+			return this.minimax(p, depth + 1, !player, alpha, beta);
+		}
+		return minimax_value;
 	}
+
 }

@@ -132,7 +132,7 @@ public class Minimax implements AlgoJeu {
 
 	public int minimax(PlateauJeu p, int depth, boolean player) {
 		this.nbnoeuds++;
-		Integer value = null;
+		Integer returned = null;
 		// System.out.println(depth >= this.profMax );
 		// System.out.println(p);
 		if (this.nbnoeuds % 10000 == 0) {
@@ -144,38 +144,31 @@ public class Minimax implements AlgoJeu {
 			return h.eval(p.copy(), this.joueurMax, depth);
 		}
 
+		int minimax_value;
 		if (player) {
 			for (int i = 0; i < p.coupsPossibles(joueurMax).length; i++) {
 				PlateauJeu p2 = p.copy();
 				p2.joue(joueurMax, p.coupsPossibles(joueurMax)[i]);
-//				for (int d = 0; d < depth; d++) {
-//					System.out.print(" ");
-//				}
-//				System.out.print(p.coupsPossibles(joueurMax)[i]);
-//				System.out.println();
 				
-				int minimax_value = this.minimax(p2, depth + 1, false);
-				if (value == null || value < minimax_value) {
-					value = minimax_value;
+				minimax_value = this.minimax(p2, depth + 1, false);
+				if (returned == null || returned < minimax_value) {
+					returned = minimax_value;
 				}
 			}
 		} else {
 			for (int i = 0; i < p.coupsPossibles(joueurMin).length; i++) {
 				PlateauJeu p2 = p.copy();
 				p2.joue(joueurMin, p.coupsPossibles(joueurMin)[i]);
-//				for (int d = 0; d < depth; d++) {
-//					System.out.print(" ");
-//				}
-				int minimax_value = this.minimax(p2, depth + 1, false);
-				if (value == null || value > minimax_value) {
-					value = minimax_value;
+				minimax_value = this.minimax(p2, depth + 1, false);
+				if (returned == null || returned > minimax_value) {
+					returned = minimax_value;
 				}
 			}
 		}
-		if (value == null) {
+		if (returned == null) {
 			return this.minimax(p, depth + 1, !player);
 		}
-		return value;
+		return returned;
 	}
 
 }

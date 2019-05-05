@@ -48,11 +48,13 @@ public class NoLoophole2 implements IJoueur {
 			System.out.println("premiers à jouer");
 			coup = "A1/B2/C1/D2/E1/F2";
 		} else if (board.pieces.size() == 6) {
-			if (!board.basLibre()) {
-				coup = "A1/B2/C1/D2/E1/F2";
-			} else {
+//			if (!board.basLibre()) {
+//				System.out.println("no");
+//				coup = "A1/B2/C1/D2/E1/F2";
+//			} else {
+//				System.out.println("yes");
 				coup = "A6/B5/C6/D5/E6/F5";
-			}
+//			}
 		} else {
 			if (board.gameOver()) {
 				return "GameOver";
